@@ -1,0 +1,224 @@
+[
+    {
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                102.523483,
+                -22.875534
+            ]
+        },
+        "_id": "6702576ff62c90902ece8f6b",
+        "provider": {
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    -73.935242,
+                    40.73061
+                ]
+            },
+            "_id": "66fb7f7866e69af2e941a999",
+            "fullName": "Monoara Moni",
+            "phone": "+1234567890",
+            "email": "monoaramoni125@gmail.com",
+            "password": "$2b$10$U.vYuairBDOwySDxAU75new3VF.bUOowlEuxPocuvTfyBb7iW6Yle",
+            "role": "provider",
+            "isDelete": "no",
+            "isBlocked": false,
+            "createdAt": "2024-10-01T04:50:00.025Z",
+            "updatedAt": "2024-10-01T04:50:00.025Z",
+            "__v": 0
+        },
+        "taskName": "Furniture Assembly",
+        "taskDetails": "Assemble a 4-piece living room furniture set, including a coffee table and chairs..",
+        "taskDate": "2024-11-05T14:00:00.000Z",
+        "category": "Outdoor Maintenance",
+        "images": [
+            "/uploads/taskPhoto/nando-jpeg-quality-001-1728206703322-183935763.jpg",
+            "/uploads/taskPhoto/nando-jpeg-quality-001-1728206703323-411022563.jpg"
+        ],
+        "taskPrice": 320,
+        "taskStatus": "pending",
+        "workType": "in-person",
+        "taskTime": "Afternoon-3PM-7PM",
+        "isDeleted": false,
+        "isReview": false,
+        "isPayment": "pending",
+        "createdAt": "2024-10-06T09:25:03.455Z",
+        "updatedAt": "2024-10-07T13:04:26.469Z"
+    },
+    {
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                102.523483,
+                -22.875534
+            ]
+        },
+        "_id": "6702570ff62c90902ece8f67",
+        "provider": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "isBlocked": false,
+            "_id": "66e55d4649ac5e507a29dad7",
+            "fullName": "John Doe",
+            "phone": "+1234567890",
+            "email": "dev.humayonforid44@gmail.com",
+            "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+            "role": "admin",
+            "isDelete": "no",
+            "createdAt": "2024-09-14T09:54:14.340Z",
+            "updatedAt": "2024-09-14T09:54:14.340Z",
+            "__v": 0
+        },
+        "taskName": "Air Conditioner Installation",
+        "taskDetails": "Install a 1.5-ton air conditioner in the living room.",
+        "taskDate": "2024-11-05T14:00:00.000Z",
+        "category": "Outdoor Maintenance",
+        "images": [
+            "/uploads/taskPhoto/nando-jpeg-quality-001-1728206607856-260848998.jpg",
+            "/uploads/taskPhoto/nando-jpeg-quality-001-1728206607858-434805970.jpg"
+        ],
+        "taskPrice": 220,
+        "taskStatus": "pending",
+        "workType": "in-person",
+        "taskTime": "Afternoon-3PM-7PM",
+        "isDeleted": false,
+        "isReview": false,
+        "isPayment": "pending",
+        "createdAt": "2024-10-06T09:23:27.987Z",
+        "updatedAt": "2024-10-06T09:23:27.987Z"
+    },
+    {
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                102.523483,
+                -22.875534
+            ]
+        },
+        "_id": "670256e0f62c90902ece8f63",
+        "provider": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "isBlocked": false,
+            "_id": "66e55d4649ac5e507a29dad7",
+            "fullName": "John Doe",
+            "phone": "+1234567890",
+            "email": "dev.humayonforid44@gmail.com",
+            "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+            "role": "admin",
+            "isDelete": "no",
+            "createdAt": "2024-09-14T09:54:14.340Z",
+            "updatedAt": "2024-09-14T09:54:14.340Z",
+            "__v": 0
+        },
+        "taskName": "Garden Cleaning",
+        "taskDetails": "Remove leaves and debris from the front yard garden.",
+        "taskDate": "2024-11-05T14:00:00.000Z",
+        "category": "Outdoor Maintenance",
+        "images": [
+            "/uploads/taskPhoto/nando-jpeg-quality-001-1728206560817-267960323.jpg",
+            "/uploads/taskPhoto/nando-jpeg-quality-001-1728206560829-983626569.jpg"
+        ],
+        "taskPrice": 120,
+        "taskStatus": "pending",
+        "workType": "in-person",
+        "taskTime": "Afternoon-3PM-7PM",
+        "isDeleted": false,
+        "isReview": false,
+        "isPayment": "pending",
+        "createdAt": "2024-10-06T09:22:40.954Z",
+        "updatedAt": "2024-10-06T09:22:40.954Z"
+    },
+    {
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -74.1723667,
+                40.735657
+            ]
+        },
+        "_id": "66fb868987b7a84fc41b3e0f",
+        "provider": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "isBlocked": false,
+            "_id": "66e55d4649ac5e507a29dad7",
+            "fullName": "John Doe",
+            "phone": "+1234567890",
+            "email": "dev.humayonforid44@gmail.com",
+            "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+            "role": "admin",
+            "isDelete": "no",
+            "createdAt": "2024-09-14T09:54:14.340Z",
+            "updatedAt": "2024-09-14T09:54:14.340Z",
+            "__v": 0
+        },
+        "taskName": "Room Clear",
+        "taskDetails": "Fix the leaking pipe under the kitchen sink.",
+        "taskDate": "2024-08-10T09:00:00.000Z",
+        "category": "Home Maintenance",
+        "images": [
+            "/uploads/taskPhoto/nando-jpeg-quality-001-1727760009373-126709301.jpg"
+        ],
+        "taskPrice": 250,
+        "taskStatus": "canceled",
+        "workType": "in-person",
+        "taskTime": "Morning-9AM-12PM",
+        "isDeleted": false,
+        "isReview": false,
+        "isPayment": "pending",
+        "createdAt": "2024-10-01T05:20:09.485Z",
+        "updatedAt": "2024-10-06T11:43:24.617Z"
+    },
+    {
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -74.078182,
+                40.728157
+            ]
+        },
+        "_id": "66fb865d87b7a84fc41b3e0a",
+        "provider": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "isBlocked": false,
+            "_id": "66e55d4649ac5e507a29dad7",
+            "fullName": "John Doe",
+            "phone": "+1234567890",
+            "email": "dev.humayonforid44@gmail.com",
+            "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+            "role": "admin",
+            "isDelete": "no",
+            "createdAt": "2024-09-14T09:54:14.340Z",
+            "updatedAt": "2024-09-14T09:54:14.340Z",
+            "__v": 0
+        },
+        "taskName": "Fix Plumbing Issue",
+        "taskDetails": "Fix the leaking pipe under the kitchen sink.",
+        "taskDate": "2024-10-10T09:00:00.000Z",
+        "category": "Home Maintenance",
+        "images": [
+            "/uploads/taskPhoto/nando-jpeg-quality-001-1727759965099-7397360.jpg"
+        ],
+        "taskPrice": 170,
+        "taskStatus": "onGoing",
+        "workType": "remote",
+        "taskTime": "Morning-9AM-12PM",
+        "isDeleted": false,
+        "isReview": false,
+        "isPayment": "adminPayment",
+        "createdAt": "2024-10-01T05:19:25.222Z",
+        "updatedAt": "2024-10-06T12:11:28.059Z",
+        "worker": "66fb801466e69af2e941a9a6"
+    }
+]

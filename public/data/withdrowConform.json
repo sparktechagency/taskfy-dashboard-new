@@ -1,0 +1,64 @@
+[
+    {
+        "googlePayDetails": {
+            "googleEmail": "user@example.com",
+            "googleId": "google-12345google-12345google-12345google-12345google-12345"
+        },
+        "_id": "6703cec2e8fcda5e349282b2",
+        "worker": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "isBlocked": false,
+            "_id": "66e68edab572f464137e8f03",
+            "fullName": "Humayon bro",
+            "phone": "+1234567890",
+            "email": "worker@gmail.com",
+            "password": "$2b$10$.aowi6Xm0ox3S0m0I0DDKedTAmdbBrxTNPwLqrBULbRed6s2KMuRu",
+            "role": "worker",
+            "isDelete": "no",
+            "createdAt": "2024-09-15T07:38:02.951Z",
+            "updatedAt": "2024-10-10T03:33:33.912Z",
+            "__v": 0
+        },
+        "amount": 20,
+        "method": "google_pay",
+        "status": "paid",
+        "transactionId": "txn_9876543210",
+        "transactionDate": "2024-10-07T12:06:26.813Z",
+        "createdAt": "2024-10-07T12:06:26.815Z",
+        "updatedAt": "2024-10-07T13:01:59.829Z"
+    },
+    {
+        "googlePayDetails": {
+            "googleEmail": "user@example.com",
+            "googleId": "google-12345"
+        },
+        "_id": "66fa87bb63156aab1e92ae75",
+        "worker": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "isBlocked": false,
+            "_id": "66e68edab572f464137e8f03",
+            "fullName": "Humayon bro",
+            "phone": "+1234567890",
+            "email": "worker@gmail.com",
+            "password": "$2b$10$.aowi6Xm0ox3S0m0I0DDKedTAmdbBrxTNPwLqrBULbRed6s2KMuRu",
+            "role": "worker",
+            "isDelete": "no",
+            "createdAt": "2024-09-15T07:38:02.951Z",
+            "updatedAt": "2024-10-10T03:33:33.912Z",
+            "__v": 0
+        },
+        "amount": 150,
+        "method": "google_pay",
+        "status": "paid",
+        "transactionId": "txn_9876543210",
+        "transactionDate": "2024-09-30T11:12:59.244Z",
+        "createdAt": "2024-09-30T11:12:59.246Z",
+        "updatedAt": "2024-10-10T10:40:32.790Z"
+    }
+]

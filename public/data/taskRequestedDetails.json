@@ -1,0 +1,48 @@
+{
+    "location": {
+        "type": "Point",
+        "coordinates": [
+            102.523483,
+            -22.875534
+        ]
+    },
+    "_id": "6702576ff62c90902ece8f6b",
+    "provider": {
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -73.935242,
+                40.73061
+            ]
+        },
+        "_id": "66fb7f7866e69af2e941a999",
+        "fullName": "Monoara Moni",
+        "phone": "+1234567890",
+        "email": "monoaramoni125@gmail.com",
+        "password": "$2b$10$U.vYuairBDOwySDxAU75new3VF.bUOowlEuxPocuvTfyBb7iW6Yle",
+        "role": "provider",
+        "isDelete": "no",
+        "isBlocked": false,
+        "createdAt": "2024-10-01T04:50:00.025Z",
+        "updatedAt": "2024-10-01T04:50:00.025Z",
+        "__v": 0
+    },
+    "taskName": "Furniture Assembly",
+    "taskDetails": "Assemble a 4-piece living room furniture set, including a coffee table and chairs..",
+    "taskDate": "2024-11-05T14:00:00.000Z",
+    "category": "Outdoor Maintenance",
+    "images": [
+        "/uploads/taskPhoto/nando-jpeg-quality-001-1728206703322-183935763.jpg",
+        "/uploads/taskPhoto/nando-jpeg-quality-001-1728206703323-411022563.jpg"
+    ],
+    "taskPrice": 320,
+    "taskStatus": "onGoing",
+    "workType": "in-person",
+    "taskTime": "Afternoon-3PM-7PM",
+    "isDeleted": false,
+    "isReview": false,
+    "isPayment": "pending",
+    "createdAt": "2024-10-06T09:25:03.455Z",
+    "updatedAt": "2024-10-07T13:04:26.469Z",
+    "__v": 0
+}
