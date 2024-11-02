@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { ConfigProvider, Table, Input } from "antd";
 import { SearchOutlined, LeftOutlined } from "@ant-design/icons";
@@ -13,39 +12,37 @@ const columns = [
     responsive: ["md"],
     render: (text, record, index) => index + 1,
   },
-  
+
   {
     title: "Provider Name",
     dataIndex: ["providerId", "fullName"],
     key: "fullName",
-    responsive: ["md","xs"], 
+    responsive: ["md", "xs"],
   },
   {
     title: "Task Name",
-    dataIndex: ["taskId","taskName"],
+    dataIndex: ["taskId", "taskName"],
     key: "taskName",
-    responsive: ["sm"], 
+    responsive: ["sm"],
   },
   {
     title: "Task Price",
-    dataIndex: ["taskId","taskPrice"],
+    dataIndex: ["taskId", "taskPrice"],
     key: "taskPrice",
-    responsive: ["sm"], 
+    responsive: ["sm"],
   },
   {
     title: "Task Payment Method",
     dataIndex: "method",
     key: "method",
     responsive: ["sm", "xs"],
-  
   },
   {
     title: "Task Transaction Id",
     dataIndex: "transactionId",
     key: "transactionId",
     responsive: ["sm", "xs"],
-  
-  }
+  },
 ];
 
 const PaymentTransaction = () => {
@@ -53,8 +50,7 @@ const PaymentTransaction = () => {
   const [taskConformPaymentData, setTaskConformPamentData] = useState([]);
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true); 
-
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStories = async () => {
@@ -100,7 +96,7 @@ const PaymentTransaction = () => {
               onClick={() => navigate(-1)}
             />
             <h1 className="text-2xl md:text-3xl font-bold text-[#1F2852]">
-              All Conform Payment Tasks
+              All Confirm Payment Tasks
             </h1>
           </div>
 

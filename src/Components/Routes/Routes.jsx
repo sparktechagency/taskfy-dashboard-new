@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createBrowserRouter } from "react-router-dom";
 import ForgotPassword from "../../Pages/Auth/ForgotPassword";
 import Main from "../Layout/Main";
@@ -27,9 +28,9 @@ import Users from "../Dashboard/Users";
 import TermsAndCondition from "../Dashboard/settings/TermsAndCondition";
 import AllTasks from "../Dashboard/AllTasks";
 import TaskRequestDetails from "../Dashboard/TaskRequestDetails";
-import AllUsers from "../Dashboard/Users/AllUsers/AllUsers";
-import AllWorker from "../Dashboard/Users/AllWorker/AllWorker";
-import AllProvider from "../Dashboard/Users/AllProvider/AllProvider";
+// import AllUsers from "../Dashboard/Users/AllUsers/AllUsers";
+// import AllWorker from "../Dashboard/Users/AllWorker/AllWorker";
+// import AllProvider from "../Dashboard/Users/AllProvider/AllProvider";
 import TasksRequest from "../Dashboard/TasksRequest";
 import TasksDetails from "../Dashboard/TasksDetails";
 import PaymentPendingTasks from "../Dashboard/PendingWithdrawList";
@@ -86,18 +87,18 @@ const router = createBrowserRouter([
             path: "users",
             element: <Users />,
           },
-          {
-            path: "all-recent-users",
-            element: <AllUsers />,
-          },
-          {
-            path: "all-worker",
-            element: <AllWorker />,
-          },
-          {
-            path: "all-provider",
-            element: <AllProvider />,
-          },
+          // {
+          //   path: "all-recent-users",
+          //   element: <AllUsers />,
+          // },
+          // {
+          //   path: "all-worker",
+          //   element: <AllWorker />,
+          // },
+          // {
+          //   path: "all-provider",
+          //   element: <AllProvider />,
+          // },
           {
             path: "all-tasks",
             element: <AllTasks />,

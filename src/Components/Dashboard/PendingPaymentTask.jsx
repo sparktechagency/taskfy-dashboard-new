@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { ConfigProvider, Table, Input } from "antd";
 import { SearchOutlined, LeftOutlined } from "@ant-design/icons";
@@ -8,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0'); // Ensure two-digit day
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed, so add 1
+  const day = String(date.getDate()).padStart(2, "0"); // Ensure two-digit day
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is zero-indexed, so add 1
   const year = date.getFullYear();
 
   return `${day}-${month}-${year}`;
@@ -21,33 +20,32 @@ const columns = [
     responsive: ["md"],
     render: (text, record, index) => index + 1,
   },
-  
   {
     title: "Provider Name",
     dataIndex: ["provider", "fullName"],
     key: "fullName",
-    responsive: ["md","xs"], 
+    responsive: ["md", "xs"],
   },
   {
     title: "Task Name",
     dataIndex: "taskName",
     key: "taskName",
-    responsive: ["sm"], 
+    responsive: ["sm"],
   },
   {
     title: "Task Price",
     dataIndex: "taskPrice",
     key: "taskPrice",
-    responsive: ["sm"], 
-    render: (price) => `$${price}`, 
+    responsive: ["sm"],
+    render: (price) => `$${price}`,
+    sorter: (a, b) => a.taskPrice - b.taskPrice,
+    sortDirections: ["ascend", "descend"],
   },
-  
   {
     title: "Task Category",
     dataIndex: "category",
     key: "category",
     responsive: ["sm", "xs"],
-    
   },
   {
     title: "Task Created Date",
@@ -55,15 +53,9 @@ const columns = [
     key: "taskDate",
     responsive: ["sm", "xs"],
     render: (text) => formatDate(text),
-    
-  },{
-    title: "Payment Status",
-    dataIndex: "status",
-    key: "status",
-    responsive: ["sm", "xs"],
-    render: (status) => (status ? "Paid" : "Unpaid"), 
-  }
-  
+    sorter: (a, b) => new Date(a.taskDate) - new Date(b.taskDate),
+    sortDirections: ["descend", "ascend"],
+  },
 ];
 
 const PendingPaymentTask = () => {
@@ -71,8 +63,7 @@ const PendingPaymentTask = () => {
   const [taskPendingPaymentData, setTaskPendingPamentData] = useState([]);
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true); 
-
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStories = async () => {
@@ -91,8 +82,6 @@ const PendingPaymentTask = () => {
     };
     fetchStories();
   }, []);
- 
- 
 
   const filteredData = useMemo(() => {
     if (!searchText) return taskPendingPaymentData;

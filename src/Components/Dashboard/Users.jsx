@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeftOutlined, SearchOutlined } from "@ant-design/icons";
@@ -5,8 +6,13 @@ import { Button, ConfigProvider, Input, Modal, Table, Tooltip } from "antd";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { GoEye } from "react-icons/go";
-import { useBlockedUserMutation, useGetAllUserQuery } from "../../Redux/api/authApi";
+import {
+  useBlockedUserMutation,
+  useGetAllUserQuery,
+} from "../../Redux/api/authApi";
 import Swal from "sweetalert2";
+
+import * as XLSX from "xlsx";
 
 export default function Users() {
   const [searchText, setSearchText] = useState("");
@@ -16,8 +22,42 @@ export default function Users() {
   const [isBlockModalVisible, setIsBlockModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const handleExport = () => {
+    // Map the data to include only the relevant fields: Name, Email, and Live Location
+    const exportData = userData.map((user) => ({
+      Name: user.name,
+      Email: user.email,
+      "Live Location": user.liveLocation,
+    }));
+
+    // Get the current date and time
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString("en-GB").replace(/\//g, "-"); // Format as dd-mm-yyyy
+    const formattedTime = now.toLocaleTimeString("en-GB").replace(/:/g, "-"); // Format as HH-MM-SS
+
+    // Combine date and time for the sheet name
+    const xlSheetName = `TASK_FLY_ALL_User_List_${formattedDate}_${formattedTime}`;
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData); // Convert the mapped data to a worksheet
+    const workbook = XLSX.utils.book_new(); // Create a new workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, "User List"); // Append worksheet to the workbook
+
+    // Generate Excel file and download
+    XLSX.writeFile(workbook, `${xlSheetName}.xlsx`);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0"); // Ensure two-digit day
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is zero-indexed, so add 1
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
+
   // const { data: usersData, isLoading } = useGetAllUserQuery(null);
-  
+
   //  useEffect(() => {
   //   if (usersData && usersData.data) {
   //     setData(usersData.data); // Ensure only valid data is set
@@ -28,9 +68,9 @@ export default function Users() {
     const fetchData = async () => {
       try {
         const response = await axios.get("/data/userData.json");
-      //  const response1 = await useGetAllUserQuery(null)
-      //  console.log('response',response.data);
-       setUserData(response?.data);
+        //  const response1 = await useGetAllUserQuery(null)
+        //  console.log('response',response.data);
+        setUserData(response?.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -49,8 +89,6 @@ export default function Users() {
       item.fullName.toLowerCase().includes(searchText.toLowerCase())
     );
   }, [userData, searchText]);
-
-
 
   const onSearch = (value) => {
     setSearchText(value);
@@ -82,12 +120,8 @@ export default function Users() {
   };
 
   const handleBlock = async () => {
-  
-
     // try {
     //   const res = await blockedUser(currentRecord._id).unwrap();
-  
-
     //   if (res.success) {
     //     Swal.fire({
     //       title: "User Blocked is Successfull!!",
@@ -104,9 +138,7 @@ export default function Users() {
     //     });
     //   }
     // } catch (error) {
-   
     //   const errorMessage = error.data?.message || "Something went wrong while blocked the user.";
-
     //   Swal.fire({
     //     title: "Error",
     //     text: errorMessage,
@@ -136,7 +168,9 @@ export default function Users() {
                 value={searchText}
                 onChange={(e) => onSearch(e.target.value)}
                 className="text-base font-semibold"
-                prefix={<SearchOutlined className="text-[#97C6EA] font-bold text-lg mr-2" />}
+                prefix={
+                  <SearchOutlined className="text-[#97C6EA] font-bold text-lg mr-2" />
+                }
                 style={{
                   width: 280,
                   padding: "8px 16px",
@@ -197,17 +231,25 @@ export default function Users() {
                 // )}
               />
               <Table.Column title="Email" dataIndex="email" key="email" />
-              <Table.Column title="Role" dataIndex="role" key="uploadedStory" />{" "}
               <Table.Column
-                title="Delete Users"
-                dataIndex="isDelete"
-                key="isDelete"
+                title="Role"
+                dataIndex="role"
+                key="role"
+                filters={[
+                  { text: "Admin", value: "admin" },
+                  { text: "Tasker", value: "tasker" },
+                  { text: "Poster", value: "poster" },
+                ]}
+                onFilter={(value, record) => record.role === value}
               />
               <Table.Column
-                title="Blocked Users"
-                dataIndex="isBlocked"
-                key="isBlocked"
-                render={(isBlocked) => (isBlocked ? "Yes" : "No")}
+                title="User Created Date"
+                dataIndex="createdAt"
+                key="createdAt"
+                responsive={["sm", "xs"]}
+                render={(text) => formatDate(text)}
+                sorter={(a, b) => new Date(a.createdAt) - new Date(b.createdAt)}
+                sortDirections={["ascend", "descend"]}
               />
               <Table.Column
                 title="Action"
@@ -236,11 +278,19 @@ export default function Users() {
           </ConfigProvider>
         </div>
 
+        <div className="text-center mt-10 pb-10">
+          <Button type="primary" onClick={handleExport}>
+            Export to Excel
+          </Button>
+        </div>
+
         {/* View Modal */}
         <Modal
           title={
             <div className="pt-7">
-              <h2 className="text-[#010515] text-2xl font-bold">Users Details</h2>
+              <h2 className="text-[#010515] text-2xl font-bold">
+                Users Details
+              </h2>
             </div>
           }
           open={isViewModalVisible}
@@ -254,7 +304,9 @@ export default function Users() {
           {currentRecord && (
             <div>
               <div className="flex items-center justify-center gap-5 mt-8">
-                <p className="text-2xl text-[#013564] font-bold">{currentRecord.customerName}</p>
+                <p className="text-2xl text-[#013564] font-bold">
+                  {currentRecord.customerName}
+                </p>
               </div>
               {/* <p className="text-xl font-bold my-2 text-start">User Information</p> */}
               <div className="flex flex-col text-lg font-semibold gap-y-2 text-start w-[80%] mx-auto mt-3">
@@ -272,7 +324,7 @@ export default function Users() {
                 onClick={showBlockModal}
                 className="bg-[#013564] text-white font-bold py-2 text-lg px-5 rounded-lg mt-8 w-[80%]"
               >
-              {currentRecord.isBlocked ? "unblocked" : "Block"}  
+                {currentRecord.isBlocked ? "unblocked" : "Block"}
               </button>
             </div>
           )}
@@ -304,7 +356,11 @@ export default function Users() {
               >
                 Cancel
               </Button>
-              <Button type="primary" style={{ background: "#013564" }} onClick={handleBlock}>
+              <Button
+                type="primary"
+                style={{ background: "#013564" }}
+                onClick={handleBlock}
+              >
                 submit
               </Button>
             </div>

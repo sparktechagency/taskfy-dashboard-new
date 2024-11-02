@@ -1,124 +1,115 @@
 [
   {
-      "location": {
-          "type": "Point",
-          "coordinates": []
-      },
-      "_id": "6704be1f93eb6776a7ac9b15",
-      "fullName": "Dr Mathews111",
-      "email": "dr.mathews@example.com222",
-      "password": "$2b$10$gX0fsPgwUypfcE2Dyqrrsu6j6inXDt9nGoHMbYWZwfXg1Macm4GnG",
-      "role": "admin",
-      "isDelete": "no",
-      "isBlocked": false,
-      "createdAt": "2024-10-08T05:07:43.484Z",
-      "updatedAt": "2024-10-09T05:15:23.043Z"
+    "location": {
+      "type": "Point",
+      "coordinates": []
+    },
+    "_id": "6704be1f93eb6776a7ac9b15",
+    "fullName": "Dr Mathews111",
+    "email": "dr.mathews@example.com222",
+    "password": "$2b$10$gX0fsPgwUypfcE2Dyqrrsu6j6inXDt9nGoHMbYWZwfXg1Macm4GnG",
+    "role": "admin",
+    "isDelete": "no",
+    "isBlocked": false,
+    "createdAt": "2024-10-08T05:07:43.484Z",
+    "updatedAt": "2024-10-09T05:15:23.043Z"
   },
   {
-      "location": {
-          "type": "Point",
-          "coordinates": []
-      },
-      "_id": "67036fefe8fcda5e349280be",
-      "fullName": "create admin",
-      "email": "stagpt2024@gmail.com",
-      "password": "$2b$10$52AcIP.yTMMPfWwlD9NcguQRbF/FLbB6Pd1qvxcPP0M73DRfWA3WW",
-      "role": "admin",
-      "isDelete": "no",
-      "isBlocked": false,
-      "createdAt": "2024-10-07T05:21:51.656Z",
-      "updatedAt": "2024-10-09T06:01:30.340Z"
+    "location": {
+      "type": "Point",
+      "coordinates": []
+    },
+    "_id": "67036fefe8fcda5e349280be",
+    "fullName": "create admin",
+    "email": "stagpt2024@gmail.com",
+    "password": "$2b$10$52AcIP.yTMMPfWwlD9NcguQRbF/FLbB6Pd1qvxcPP0M73DRfWA3WW",
+    "role": "tasker",
+    "isDelete": "no",
+    "isBlocked": false,
+    "createdAt": "2024-10-07T05:21:51.656Z",
+    "updatedAt": "2024-10-09T06:01:30.340Z"
   },
   {
-      "location": {
-          "type": "Point",
-          "coordinates": [
-              -63.935242,
-              30.73061
-          ]
-      },
-      "_id": "67036e89e8fcda5e349280b7",
-      "fullName": "admin bro vai",
-      "phone": "+1234567890100",
-      "email": "admin@gmail.com",
-      "password": "$2b$10$WZEQVCxgFRwDu.e9q/VqiOUOrUSZwvT8PB4USYpugEQ8v5lmTDn3W",
-      "role": "super_admin",
-      "bsnNumber": "12345671",
-      "taxFileNumber": "98765438",
-      "isDelete": "no",
-      "isBlocked": false,
-      "createdAt": "2024-10-07T05:15:53.629Z",
-      "updatedAt": "2024-10-08T13:57:22.741Z",
-      "photo": "/uploads/profile/nando-jpeg-quality-001-1728395842729-274017212.jpg"
+    "location": {
+      "type": "Point",
+      "coordinates": [-63.935242, 30.73061]
+    },
+    "_id": "67036e89e8fcda5e349280b7",
+    "fullName": "admin bro vai",
+    "phone": "+1234567890100",
+    "email": "admin@gmail.com",
+    "password": "$2b$10$WZEQVCxgFRwDu.e9q/VqiOUOrUSZwvT8PB4USYpugEQ8v5lmTDn3W",
+    "role": "admin",
+    "bsnNumber": "12345671",
+    "taxFileNumber": "98765438",
+    "isDelete": "no",
+    "isBlocked": false,
+    "createdAt": "2024-10-07T05:15:53.629Z",
+    "updatedAt": "2024-10-08T13:57:22.741Z",
+    "photo": "/uploads/profile/nando-jpeg-quality-001-1728395842729-274017212.jpg"
   },
   {
-      "location": {
-          "type": "Point",
-          "coordinates": [
-              -63.935242,
-              30.73061
-          ]
-      },
-      "_id": "66fb801466e69af2e941a9a6",
-      "fullName": "Balam bro",
-      "phone": "+1234567890",
-      "email": "stagpt2024@gmail.com",
-      "password": "$2b$10$OH1c3a6ykjGnauNAYGsYSOOxR/o/ukE5MxYfLuZ3NVgE856N2HElS",
-      "role": "worker",
-      "isDelete": "no",
-      "isBlocked": false,
-      "createdAt": "2024-10-01T04:52:36.698Z",
-      "updatedAt": "2024-10-08T06:42:42.145Z"
+    "location": {
+      "type": "Point",
+      "coordinates": [-63.935242, 30.73061]
+    },
+    "_id": "66fb801466e69af2e941a9a6",
+    "fullName": "Balam bro",
+    "phone": "+1234567890",
+    "email": "stagpt2024@gmail.com",
+    "password": "$2b$10$OH1c3a6ykjGnauNAYGsYSOOxR/o/ukE5MxYfLuZ3NVgE856N2HElS",
+    "role": "tasker",
+    "isDelete": "no",
+    "isBlocked": false,
+    "createdAt": "2024-10-01T04:52:36.698Z",
+    "updatedAt": "2024-10-08T06:42:42.145Z"
   },
   {
-      "location": {
-          "type": "Point",
-          "coordinates": [
-              -73.935242,
-              40.73061
-          ]
-      },
-      "_id": "66fb7f7866e69af2e941a999",
-      "fullName": "Monoara Moni",
-      "phone": "+1234567890",
-      "email": "monoaramoni125@gmail.com",
-      "password": "$2b$10$U.vYuairBDOwySDxAU75new3VF.bUOowlEuxPocuvTfyBb7iW6Yle",
-      "role": "provider",
-      "isDelete": "no",
-      "isBlocked": false,
-      "createdAt": "2024-10-01T04:50:00.025Z",
-      "updatedAt": "2024-10-01T04:50:00.025Z"
+    "location": {
+      "type": "Point",
+      "coordinates": [-73.935242, 40.73061]
+    },
+    "_id": "66fb7f7866e69af2e941a999",
+    "fullName": "Monoara Moni",
+    "phone": "+1234567890",
+    "email": "monoaramoni125@gmail.com",
+    "password": "$2b$10$U.vYuairBDOwySDxAU75new3VF.bUOowlEuxPocuvTfyBb7iW6Yle",
+    "role": "poster",
+    "isDelete": "no",
+    "isBlocked": false,
+    "createdAt": "2024-10-01T04:50:00.025Z",
+    "updatedAt": "2024-10-01T04:50:00.025Z"
   },
   {
-      "location": {
-          "type": "Point",
-          "coordinates": []
-      },
-      "isBlocked": false,
-      "_id": "66e68edab572f464137e8f03",
-      "fullName": "Humayon bro",
-      "phone": "+1234567890",
-      "email": "worker@gmail.com",
-      "password": "$2b$10$.aowi6Xm0ox3S0m0I0DDKedTAmdbBrxTNPwLqrBULbRed6s2KMuRu",
-      "role": "worker",
-      "isDelete": "no",
-      "createdAt": "2024-09-15T07:38:02.951Z",
-      "updatedAt": "2024-10-10T03:33:33.912Z"
+    "location": {
+      "type": "Point",
+      "coordinates": []
+    },
+    "isBlocked": false,
+    "_id": "66e68edab572f464137e8f03",
+    "fullName": "Humayon bro",
+    "phone": "+1234567890",
+    "email": "worker@gmail.com",
+    "password": "$2b$10$.aowi6Xm0ox3S0m0I0DDKedTAmdbBrxTNPwLqrBULbRed6s2KMuRu",
+    "role": "tasker",
+    "isDelete": "no",
+    "createdAt": "2024-09-15T07:38:02.951Z",
+    "updatedAt": "2024-10-10T03:33:33.912Z"
   },
   {
-      "location": {
-          "type": "Point",
-          "coordinates": []
-      },
-      "isBlocked": false,
-      "_id": "66e55d4649ac5e507a29dad7",
-      "fullName": "John Doe",
-      "phone": "+1234567890",
-      "email": "dev.humayonforid44@gmail.com",
-      "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
-      "role": "admin",
-      "isDelete": "no",
-      "createdAt": "2024-09-14T09:54:14.340Z",
-      "updatedAt": "2024-09-14T09:54:14.340Z"
+    "location": {
+      "type": "Point",
+      "coordinates": []
+    },
+    "isBlocked": false,
+    "_id": "66e55d4649ac5e507a29dad7",
+    "fullName": "John Doe",
+    "phone": "+1234567890",
+    "email": "dev.humayonforid44@gmail.com",
+    "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+    "role": "poster",
+    "isDelete": "no",
+    "createdAt": "2024-09-14T09:54:14.340Z",
+    "updatedAt": "2024-09-14T09:54:14.340Z"
   }
 ]

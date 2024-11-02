@@ -1,0 +1,9 @@
+[
+  { "id": 1, "name": "Outdoor Maintenance" },
+  { "id": 2, "name": "Home Maintenance" },
+  { "id": 3, "name": "Indoor Maintenance" },
+  { "id": 5, "name": "Electrical Work" },
+  { "id": 6, "name": "Cleaning Service" },
+  { "id": 7, "name": "Home Repair" },
+  { "id": 8, "name": "Furniture Assembly" }
+]

@@ -33,7 +33,7 @@ const DashboardLayout = () => {
     <div className="h-screen">
       <Layout className="min-h-[100vh]">
         <Sider
-          width={200}
+          width={280}
           theme="light"
           trigger={null}
           collapsible
@@ -85,14 +85,18 @@ const DashboardLayout = () => {
                       src={dashboardLogo}
                       alt="dashboard"
                       className={`h-5 menu-icon ${
-                        location.pathname.includes("dashboard") ? "active-icon" : ""
+                        location.pathname.includes("dashboard")
+                          ? "active-icon"
+                          : ""
                       }`}
                     />
                   ),
                   label: (
                     <NavLink
                       to="dashboard"
-                      className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item" : ""
+                      }
                     >
                       Dashboard
                     </NavLink>
@@ -112,7 +116,9 @@ const DashboardLayout = () => {
                   label: (
                     <NavLink
                       to="users"
-                      className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item" : ""
+                      }
                     >
                       Users
                     </NavLink>
@@ -153,7 +159,9 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="all-tasks"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item" : ""
+                          }
                         >
                           All Tasks
                         </NavLink>
@@ -165,7 +173,9 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="tasks-request"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item" : ""
+                          }
                         >
                           Tasks Request
                         </NavLink>
@@ -177,7 +187,9 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="task-pending-payment-task"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item" : ""
+                          }
                         >
                           Pending Payment Tasks
                         </NavLink>
@@ -189,9 +201,11 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="conform-payment-tasks"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item" : ""
+                          }
                         >
-                          Conform Payment Tasks
+                          Confirmation Payment Tasks
                         </NavLink>
                       ),
                     },
@@ -201,7 +215,9 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="task-payment-transaction"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item" : ""
+                          }
                         >
                           Transaction Payment task
                         </NavLink>
@@ -245,9 +261,11 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="all-pending-withdraw-list"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item" : ""
+                          }
                         >
-                          Withdraw Requiest
+                          Withdraw Request
                         </NavLink>
                       ),
                     },
@@ -257,9 +275,11 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="all-conform-withdraw-list"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item" : ""
+                          }
                         >
-                          Conform Withdraw
+                          Confirm Withdraw
                         </NavLink>
                       ),
                     },
@@ -300,7 +320,9 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="settings/change-password"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item" : ""
+                          }
                         >
                           Change Password
                         </NavLink>
@@ -312,7 +334,9 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="settings/about-us"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item" : ""
+                          }
                         >
                           About Us
                         </NavLink>
@@ -324,7 +348,9 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="settings/terms-of-service"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item" : ""
+                          }
                         >
                           Terms Of Service
                         </NavLink>
@@ -336,7 +362,9 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="settings/privacy-policy"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item" : ""
+                          }
                         >
                           Privacy And Policy
                         </NavLink>
@@ -385,7 +413,9 @@ const DashboardLayout = () => {
                   label: (
                     <NavLink
                       to="dashboard/create-admin"
-                      className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item" : ""
+                      }
                     >
                       Create New Admin
                     </NavLink>
@@ -400,14 +430,18 @@ const DashboardLayout = () => {
                       width={15}
                       height={15}
                       className={`menu-icon ${
-                        location.pathname.includes("signin") ? "active-icon" : ""
+                        location.pathname.includes("signin")
+                          ? "active-icon"
+                          : ""
                       }`}
                     />
                   ),
                   label: (
                     <NavLink
                       to="signin"
-                      className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item" : ""
+                      }
                     >
                       Logout
                     </NavLink>

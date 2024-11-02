@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { ConfigProvider, Table, Input } from "antd";
 import { SearchOutlined, LeftOutlined } from "@ant-design/icons";
@@ -8,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0'); // Ensure two-digit day
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed, so add 1
+  const day = String(date.getDate()).padStart(2, "0"); // Ensure two-digit day
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is zero-indexed, so add 1
   const year = date.getFullYear();
 
   return `${day}-${month}-${year}`;
@@ -21,33 +20,32 @@ const columns = [
     responsive: ["md"],
     render: (text, record, index) => index + 1,
   },
-  
+
   {
     title: "Provider Name",
     dataIndex: ["providerId", "fullName"],
     key: "fullName",
-    responsive: ["md","xs"], 
+    responsive: ["md", "xs"],
   },
   {
     title: "Task Name",
-    dataIndex: ["taskId","taskName"],
+    dataIndex: ["taskId", "taskName"],
     key: "taskName",
-    responsive: ["sm"], 
+    responsive: ["sm"],
   },
   {
     title: "Task Price",
-    dataIndex: ["taskId","taskPrice"],
+    dataIndex: ["taskId", "taskPrice"],
     key: "taskPrice",
-    responsive: ["sm"], 
+    responsive: ["sm"],
     render: (price) => `$${price}`,
   },
-  
+
   {
     title: "Payment Transaction Id",
     dataIndex: "transactionId",
     key: "transactionId",
     responsive: ["sm", "xs"],
-    
   },
   {
     title: "Payment Transaction Date",
@@ -55,15 +53,7 @@ const columns = [
     key: "status",
     responsive: ["sm", "xs"],
     render: (text) => formatDate(text),
-    
-  },{
-    title: "Payment Status",
-    dataIndex: "status",
-    key: "status",
-    responsive: ["sm", "xs"],
-    render: (status) => (status ? "Paid" : "Unpaid"), 
-  }
-  
+  },
 ];
 
 const ConformPaymentTask = () => {
@@ -71,8 +61,7 @@ const ConformPaymentTask = () => {
   const [taskConformPaymentData, setTaskConformPamentData] = useState([]);
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true); 
-
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStories = async () => {
@@ -93,9 +82,6 @@ const ConformPaymentTask = () => {
   }, []);
 
   // console.log('taskConformPaymentData',taskConformPaymentData)
-
-
- 
 
   const filteredData = useMemo(() => {
     if (!searchText) return taskConformPaymentData;
@@ -123,7 +109,7 @@ const ConformPaymentTask = () => {
               onClick={() => navigate(-1)}
             />
             <h1 className="text-2xl md:text-3xl font-bold text-[#1F2852]">
-              All Conform Payment Tasks
+              All Confirm Payment Tasks
             </h1>
           </div>
 

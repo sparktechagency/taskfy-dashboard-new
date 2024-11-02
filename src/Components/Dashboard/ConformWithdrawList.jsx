@@ -1,4 +1,4 @@
-
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { ConfigProvider, Table, Input, Button, Space, Modal } from "antd";
@@ -8,13 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0'); // Ensure two-digit day
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed, so add 1
+  const day = String(date.getDate()).padStart(2, "0"); // Ensure two-digit day
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is zero-indexed, so add 1
   const year = date.getFullYear();
 
   return `${day}-${month}-${year}`;
 };
-
 
 const ConformWithdrawList = () => {
   const [searchText, setSearchText] = useState("");
@@ -24,7 +23,6 @@ const ConformWithdrawList = () => {
   const [currentRecord, setCurrentRecord] = useState(null);
   // const [isViewModalVisible, setIsViewModalVisible] = useState(false);
 
-  
   const columns = [
     {
       title: "S.ID",
@@ -32,11 +30,11 @@ const ConformWithdrawList = () => {
       responsive: ["md"],
       render: (text, record, index) => index + 1,
     },
-    
+
     {
       title: "Worker Name",
       dataIndex: ["worker", "fullName"],
-      responsive: ["md","xs"], 
+      responsive: ["md", "xs"],
     },
     {
       title: "Withdraw Date",
@@ -46,12 +44,12 @@ const ConformWithdrawList = () => {
     {
       title: "Method",
       dataIndex: "method",
-      responsive: ["sm"], 
+      responsive: ["sm"],
     },
     {
       title: "Withdraw Amount",
       dataIndex: "amount",
-      responsive: ["sm"], 
+      responsive: ["sm"],
     },
     {
       title: "Withdraw Status",
@@ -61,18 +59,18 @@ const ConformWithdrawList = () => {
       render: (text) => {
         let color = "";
         let displayText = text;
-        let fontWeight = "normal"; 
-    
+        let fontWeight = "normal";
+
         if (text === "pending") {
           color = "#FFD33C";
-          displayText = "Pending"; 
-          fontWeight = "bold"; 
+          displayText = "Pending";
+          fontWeight = "bold";
         } else if (text === "paid") {
-          color = "green"; 
-          displayText = "Paid"; 
-          fontWeight = "bold"; 
+          color = "green";
+          displayText = "Paid";
+          fontWeight = "bold";
         }
-    
+
         return <span style={{ color, fontWeight }}>{displayText}</span>;
       },
     },
@@ -83,22 +81,22 @@ const ConformWithdrawList = () => {
         // Button to trigger a pending withdraw action
         return (
           <Space>
-        <Button
-          onClick={() => showViewModal(record)}
-          style={{ border: '1px solid', borderColor: "#023E8A" }}
-           // Disable if already paid
-        >View Details
-        </Button></Space>
-          
+            <Button
+              onClick={() => showViewModal(record)}
+              style={{ border: "1px solid", borderColor: "#023E8A" }}
+              // Disable if already paid
+            >
+              View Details
+            </Button>
+          </Space>
         );
       },
     },
-    
   ];
 
   const [pendingWithdrawData, setPendingWithdrawData] = useState([]);
 
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStories = async () => {
@@ -118,7 +116,7 @@ const ConformWithdrawList = () => {
     fetchStories();
   }, []);
 
-// console.log('conformWithdrawDatas',pendingWithdrawData)
+  // console.log('conformWithdrawDatas',pendingWithdrawData)
   const filteredData = useMemo(() => {
     if (!searchText) return pendingWithdrawData;
     return pendingWithdrawData.filter((item) =>
@@ -134,7 +132,6 @@ const ConformWithdrawList = () => {
     console.log("params", filters, extra);
   };
 
-  
   const handleWithdraw = (record) => {
     // Implement your logic for pending withdraw action
     console.log("Withdraw action for: ", record);
@@ -161,7 +158,7 @@ const ConformWithdrawList = () => {
               onClick={() => navigate(-1)}
             />
             <h1 className="text-2xl md:text-3xl font-bold text-[#1F2852]">
-            Conform Withdraw List
+              Confirm Withdraw List
             </h1>
           </div>
 
@@ -224,62 +221,68 @@ const ConformWithdrawList = () => {
           </div>
         </ConfigProvider>
       </div>
-       {/* View Modal */}
-       <Modal
-          title={
-            <div className="pt-7">
-              <h2 className="text-[#010515] text-2xl font-bold ">
-                User Withdraw Details
-              </h2>
-              
+      {/* View Modal */}
+      <Modal
+        title={
+          <div className="pt-7">
+            <h2 className="text-[#010515] text-2xl font-bold ">
+              User Withdraw Details
+            </h2>
+          </div>
+        }
+        open={isViewModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+        centered
+        style={{ textAlign: "center" }}
+        width={450}
+        className=""
+      >
+        {currentRecord && (
+          <div>
+            {/* <p className="text-xl font-bold my-2 text-start">User Information</p> */}
+            <div className="flex flex-col text-lg pb-5  gap-y-2 text-start w-[80%] mx-auto mt-3">
+              <p>
+                <span className="font-semibold ">Name:</span>{" "}
+                {currentRecord.worker.fullName}
+              </p>
+              <p>
+                <span className="font-semibold ">Email:</span>{" "}
+                {currentRecord.worker.email}
+              </p>
+              <p>
+                <span className="font-semibold ">Phone No:</span>{" "}
+                {currentRecord.worker.phone}
+              </p>
+              <p>
+                <span className="font-semibold ">Amount:</span>{" "}
+                {currentRecord.amount}
+              </p>
+              <p>
+                <span className="font-semibold ">Payment Method:</span>{" "}
+                {currentRecord.method}
+              </p>
+              <p>
+                <span className="font-semibold ">Payment Status:</span>{" "}
+                {currentRecord.status}
+              </p>
+              <p>
+                <span className="font-semibold ">Payment Transaction Id:</span>{" "}
+                {currentRecord.transactionId}
+              </p>
             </div>
-          }
-          open={isViewModalVisible}
-          onCancel={handleCancel}
-          footer={null}
-          centered
-          style={{ textAlign: "center" }}
-          width={450}
-          className=""
-        >
-          {currentRecord && (
-            <div>
-              {/* <p className="text-xl font-bold my-2 text-start">User Information</p> */}
-              <div className="flex flex-col text-lg pb-5  gap-y-2 text-start w-[80%] mx-auto mt-3">
-                <p>
-                  <span className="font-semibold " >Name:</span> {currentRecord.worker.fullName}
-                </p>
-                <p>
-                  <span className="font-semibold " >Email:</span> {currentRecord.worker.email}
-                </p>
-                <p>
-                  <span className="font-semibold " >Phone No:</span> {currentRecord.worker.phone}
-                </p>
-                <p>
-                  <span className="font-semibold " >Amount:</span> {currentRecord.amount}
-                </p>
-                <p>
-                  <span className="font-semibold " >Payment Method:</span> {currentRecord.method}
-                </p>
-                <p>
-                  <span className="font-semibold " >Payment Status:</span> {currentRecord.status}
-                </p>
-                <p>
-                  <span className="font-semibold " >Payment Transaction Id:</span> {currentRecord.transactionId}
-                </p>
-              </div>
-              {/* <button
+            {/* <button
                 // onClick={showBlockModal}
                 className="bg-[#013564] text-white font-bold py-2 text-lg px-5 rounded-lg mt-8 w-[80%]"
               >
                 Block
               </button> */}
-            </div>
-          )}
-        </Modal>
+          </div>
+        )}
+      </Modal>
 
-        {/* Block Confirmation Modal */}
-        {/* <Modal
+      {/* Block Confirmation Modal */}
+      {/* <Modal
           open={isBlockModalVisible}
           onOk={handleBlock}
           onCancel={handleCancel}

@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import {
   LineChart,
   Line,
@@ -47,9 +47,9 @@ export const InfoCard = ({ title, value, color }) => {
     <div
       className={`relative rounded-lg p-4 md:p-6 shadow-lg overflow-hidden ${color}`}
       style={{
-        backgroundImage: `${fatArrowSvg("rgba(255, 255, 255, 0.1)")}, ${fatArrowSvg(
+        backgroundImage: `${fatArrowSvg(
           "rgba(255, 255, 255, 0.1)"
-        )}`,
+        )}, ${fatArrowSvg("rgba(255, 255, 255, 0.1)")}`,
         backgroundSize: "80px 80px, 80px 80px",
         backgroundPosition: "top right, bottom left", // Position arrows
         backgroundRepeat: "no-repeat, no-repeat",
@@ -61,7 +61,13 @@ export const InfoCard = ({ title, value, color }) => {
       </div>
       <ResponsiveContainer width="100%" height={50}>
         <LineChart data={dataLine}>
-          <Line type="monotone" dataKey="value" stroke="#fff" strokeWidth={2} dot={false} />
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke="#fff"
+            strokeWidth={2}
+            dot={false}
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>
@@ -85,20 +91,24 @@ export const TaskOverviewBarChart = ({ tasks }) => {
   const completedTasks = Array.isArray(tasks)
     ? tasks?.filter((task) => task?.taskStatus === "completed")
     : [];
-  const canceledTasks = Array.isArray(tasks)
-    ? tasks?.filter((task) => task?.taskStatus === "canceled")
+  const cancelledTasks = Array.isArray(tasks)
+    ? tasks?.filter((task) => task?.taskStatus === "cancelled")
     : [];
 
   // Data for the bar chart
   const dataBar = [
     { name: "PENDING", total: tasks?.length, tasks: pendingTasks?.length },
-    { name: "ONBOARDING", total: tasks?.length, tasks: onBoardingTasks?.length },
+    {
+      name: "ONBOARDING",
+      total: tasks?.length,
+      tasks: onBoardingTasks?.length,
+    },
     { name: "ONGOING", total: tasks?.length, tasks: onGoingTasks?.length },
     { name: "COMPLETED", total: tasks?.length, tasks: completedTasks?.length },
-    { name: "CANCELED", total: tasks?.length, tasks: canceledTasks?.length },
+    { name: "CANCELED", total: tasks?.length, tasks: cancelledTasks?.length },
   ];
 
-  // console.log('databar', dataBar);
+  console.log("databar", dataBar);
 
   return (
     <div className="bg-[#F5F9FE] rounded-lg p-4">
@@ -107,8 +117,29 @@ export const TaskOverviewBarChart = ({ tasks }) => {
           <XAxis dataKey="name" tick={{ fontSize: 12 }} />
           <YAxis tick={{ fontSize: 12 }} />
           <Tooltip />
-          <Bar dataKey="total" barSize={14} fill="#1F2852" radius={[10, 10, 0, 0]} />
-          <Bar dataKey="tasks" barSize={14} fill="#3565A1" radius={[10, 10, 0, 0]} />
+          <Bar
+            dataKey="total"
+            barSize={14}
+            fill="#1F2852"
+            radius={[10, 10, 0, 0]}
+          />
+          <Bar
+            dataKey="tasks"
+            barSize={14}
+            fill={({ payload }) => {
+              switch (payload.name) {
+                case "COMPLETED":
+                  return "#28a745"; // Green for completed
+                case "CANCELED":
+                  return "#dc3545"; // Red for canceled
+                case "PENDING":
+                  return "#1F2852"; // Navy blue for pending
+                default:
+                  return "#3565A1"; // Default color
+              }
+            }}
+            radius={[10, 10, 0, 0]}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>
