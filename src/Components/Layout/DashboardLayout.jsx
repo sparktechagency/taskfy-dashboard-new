@@ -205,7 +205,7 @@ const DashboardLayout = () => {
                             isActive ? "active-menu-item" : ""
                           }
                         >
-                          Confirmation Payment Tasks
+                          Confirm Payment Tasks
                         </NavLink>
                       ),
                     },

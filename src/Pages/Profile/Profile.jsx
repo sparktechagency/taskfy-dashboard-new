@@ -20,15 +20,15 @@ import { jwtDecode } from "jwt-decode";
 // ];
 
 const Profile = () => {
-  const userToken = localStorage.getItem('accessToken');
-  const tokenData = jwtDecode(userToken);
+  // const userToken = localStorage.getItem('accessToken');
+  // const tokenData = jwtDecode(userToken);
  
-  // const [profileData, setProfileData] = useState({
-  //   fullName: "Dr Mathews",
-  //   email: "dr.mathews@example.com",
-  //   phone: "01846875456",
+  const [profileData, setProfileData] = useState({
+    fullName: "Dr Mathews",
+    email: "dr.mathews@example.com",
+    phone: "01846875456",
   
-  // });
+  });
   const navigate = useNavigate();
 
   const handleEditClick = () => {
@@ -63,7 +63,7 @@ const Profile = () => {
               alt="Profile"
               className="rounded-full w-36 h-36 object-cover mb-4"
             />
-            <h2 className="text-xl lg:text-2xl font-bold text-white">{`${tokenData.fullName}`}</h2>
+            <h2 className="text-xl lg:text-2xl font-bold text-white">{`${profileData.fullName}`}</h2>
           </div>
           <div className="flex-1">
             <ConfigProvider
@@ -94,7 +94,7 @@ const Profile = () => {
                   >
                     <Input
                       className=" rounded-lg h-10 font-semibold "
-                      value={tokenData.fullName}
+                      value={profileData.fullName}
                       readOnly
                     />
                   </Form.Item>
@@ -114,7 +114,7 @@ const Profile = () => {
                 >
                   <Input
                     className=" rounded-lg h-10 font-semibold"
-                    value={tokenData.email}
+                    value={profileData.email}
                     readOnly
                   />
                 </Form.Item>
@@ -134,7 +134,7 @@ const Profile = () => {
                   >
                     <Input
                     className="  rounded-lg h-10 font-semibold"
-                    value={tokenData.phone}
+                    value={profileData.phone}
                     readOnly
                   />
                   </Form.Item>

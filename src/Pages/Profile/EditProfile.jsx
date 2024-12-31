@@ -11,8 +11,8 @@ import Swal from "sweetalert2";
 const EditProfile = () => {
   const navigate = useNavigate();
   // const [userUpdateData] = useUpdateProfileMutation();
-  const userToken = localStorage.getItem('accessToken');
-  const userData = jwtDecode(userToken);
+  // const userToken = localStorage.getItem('accessToken');
+  // const userData = jwtDecode(userToken);
   // const {data:singleUserData} = useSingleUserQuery(userData.id);
   // console.log('singleUserData',singleUserData?.data?.photo);
 const singleUserData ={
@@ -47,54 +47,70 @@ const singleUserData ={
    
   };
 
+  const [profileData, setProfileData] = useState({
+    fullName: "Dr Mathews",
+    email: "dr.mathews@example.com",
+    phone: "01846875456",
+  
+  });
+
+
+
+  // const onFinish = async (values) => {
+
+  //   // Create a FormData object
+  //   const data = new FormData();
+  //    // Use the original file for upload
+  //   if (uploadedFile) {
+  //     data.append('photo', uploadedFile); // Append the file
+  //   }
+  //   data.append('photo', imageUrl); // Append the image URL or file
+  //   data.append('fullName', values.fullName);
+  //   data.append('phone', values.phone);
+  //   data.append('email', values.email);
+
+
+   
+  //   console.log('updateUserData', data);
+
+  //   try {
+  //     // Await the mutation response
+  //     // const res = await userUpdateData({ id: userData.id, data }).unwrap();
+  //     // console.log('update res user', res);
+  //     const res = true;
+   
+  //     if (res) {
+  //       Swal.fire({
+  //         title: "Profile updated successfully",
+  //         text: "The user has been updated.",
+  //         icon: "success",
+  //       });
+  //       navigate("/profile");
+  //     } else {
+  //       Swal.fire({
+  //         title: "Error",
+  //         text: "There was an issue updating the user.",
+  //         icon: "error",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating user:", error);
+  //     if (error.data) {
+  //       Swal.fire({
+  //         title: `${error.data.message}`,
+  //         text: "Something went wrong while updating the profile.",
+  //         icon: "error",
+  //       });
+  //     }
+  //   }
+  // };
+  
+  
   const onFinish = async (values) => {
-
-    // Create a FormData object
-    const data = new FormData();
-     // Use the original file for upload
-    if (uploadedFile) {
-      data.append('photo', uploadedFile); // Append the file
-    }
-    data.append('photo', imageUrl); // Append the image URL or file
-    data.append('fullName', values.fullName);
-    data.append('phone', values.phone);
-    data.append('email', values.email);
-
-
-   
-    console.log('updateUserData', data);
-
-    try {
-      // Await the mutation response
-      // const res = await userUpdateData({ id: userData.id, data }).unwrap();
-      // console.log('update res user', res);
-      const res = true;
-   
-      if (res) {
-        Swal.fire({
-          title: "Profile updated successfully",
-          text: "The user has been updated.",
-          icon: "success",
-        });
-        navigate("/profile");
-      } else {
-        Swal.fire({
-          title: "Error",
-          text: "There was an issue updating the user.",
-          icon: "error",
-        });
-      }
-    } catch (error) {
-      console.error("Error updating user:", error);
-      if (error.data) {
-        Swal.fire({
-          title: `${error.data.message}`,
-          text: "Something went wrong while updating the profile.",
-          icon: "error",
-        });
-      }
-    }
+    // console.log("Success:", values);
+    navigate("/profile");
   };
+  
   return (
     <div className="p-4 lg:p-8 min-h-screen">
       <div className="flex justify-between items-center mb-8 mx-10 xl:mx-40">
@@ -126,7 +142,7 @@ const singleUserData ={
                 </span>
               </div>
             </Upload>
-            <h2 className="text-lg font-bold text-white">{userData.fullName}</h2>
+            <h2 className="text-lg font-bold text-white">{profileData.fullName}</h2>
           </div>
        
         <div className="">
@@ -147,9 +163,9 @@ const singleUserData ={
                 id="editProfileForm"
                 onFinish={onFinish}
                 initialValues={{
-                  fullName: userData.fullName,
-                  email: userData.email,
-                  phone: userData.phone,
+                  fullName: profileData.fullName,
+                  email: profileData.email,
+                  phone: profileData.phone,
                 }}
               >
                 <div className="flex flex-col">

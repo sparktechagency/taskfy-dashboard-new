@@ -138,7 +138,7 @@ import { Button, Table, ConfigProvider, Input, Tabs } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { SearchOutlined } from "@ant-design/icons";
+import { DownloadOutlined, SearchOutlined } from "@ant-design/icons";
 
 import * as XLSX from "xlsx";
 
@@ -161,26 +161,22 @@ const AllTasks = () => {
   const navigate = useNavigate();
 
   const handleExport = () => {
-    // Map the data to include only the relevant fields: Name, Email, and Live Location
     const exportData = tasksData.map((user) => ({
       Name: user.name,
       Email: user.email,
       "Live Location": user.liveLocation,
     }));
 
-    // Get the current date and time
     const now = new Date();
-    const formattedDate = now.toLocaleDateString("en-GB").replace(/\//g, "-"); // Format as dd-mm-yyyy
-    const formattedTime = now.toLocaleTimeString("en-GB").replace(/:/g, "-"); // Format as HH-MM-SS
-
-    // Combine date and time for the sheet name
+    const formattedDate = now.toLocaleDateString("en-GB").replace(/\//g, "-"); 
+    const formattedTime = now.toLocaleTimeString("en-GB").replace(/:/g, "-"); 
+    
     const xlSheetName = `TASK_FLY_ALL_Task_List_${formattedDate}_${formattedTime}`;
 
-    const worksheet = XLSX.utils.json_to_sheet(exportData); // Convert the mapped data to a worksheet
-    const workbook = XLSX.utils.book_new(); // Create a new workbook
-    XLSX.utils.book_append_sheet(workbook, worksheet, "User List"); // Append worksheet to the workbook
+    const worksheet = XLSX.utils.json_to_sheet(exportData); 
+    const workbook = XLSX.utils.book_new(); 
+    XLSX.utils.book_append_sheet(workbook, worksheet, "User List"); 
 
-    // Generate Excel file and download
     XLSX.writeFile(workbook, `${xlSheetName}.xlsx`);
   };
 
@@ -321,7 +317,9 @@ const AllTasks = () => {
           />
         </div>
       </div>
-      <Tabs
+      <div className="flex justify-between items-center">
+        <div>
+        <Tabs
         defaultActiveKey="onGoing"
         onChange={(key) => {
           setActiveTab(key);
@@ -339,6 +337,14 @@ const AllTasks = () => {
           { key: "cancelled", label: "Cancelled", children: null },
         ]}
       />
+        </div>
+        <div>
+        <Button type="primary" onClick={handleExport} icon={<DownloadOutlined />}>
+        Export to Excel
+      </Button>
+        </div>
+      </div>
+     
       <ConfigProvider
         theme={{
           components: {
@@ -362,11 +368,11 @@ const AllTasks = () => {
           />
         </div>
       </ConfigProvider>
-      <div className="text-center mt-10 pb-10">
+      {/* <div className="text-center mt-10 pb-10">
         <Button type="primary" onClick={handleExport}>
           Export to Excel
         </Button>
-      </div>
+      </div> */}
       <style>{`
         .ant-tabs-tab {
           padding-top: 16px !important;

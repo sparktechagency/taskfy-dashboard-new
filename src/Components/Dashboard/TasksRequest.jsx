@@ -150,17 +150,16 @@ const TasksRequest = () => {
         }}
       >
         <div>
-          <div className="text-[#1F2852] p-4 rounded-t-lg">
+          <div className="text-[#1F2852] p-4 rounded-t-lg flex justify-between items-center">
             <h1 className="text-2xl font-bold">Tasks Request</h1>
-          </div>
-          <div className="p-4">
+            <div className="p-4">
             <Select
               placeholder="Filter by Category"
               onChange={handleCategoryChange}
               allowClear
-              className="w-full mb-4 h-12 text-2xl !text-zinc-900"
+              className="w-full mb-4 h-12 text-2xl !text-zinc-900 border border-[#1F2852] rounded-lg"
             >
-              <Option value={"all"}>All</Option>
+              {/* <Option value={"all"}>All</Option> */}
               {categories.map((category) => (
                 <Option key={category.id} value={category.name}>
                   {category.name}
@@ -168,6 +167,8 @@ const TasksRequest = () => {
               ))}
             </Select>
           </div>
+          </div>
+          
 
           <div className="rounded-b-lg py-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

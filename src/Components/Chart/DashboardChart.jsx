@@ -74,19 +74,75 @@ export const InfoCard = ({ title, value, color }) => {
   );
 };
 
-export const TaskOverviewBarChart = ({ tasks }) => {
-  // Log tasks for debugging
-  // console.log("taskOverviewBarChart", tasks);
+// export const TaskOverviewBarChart = ({ tasks }) => {
+//   // Log tasks for debugging
+//   // console.log("taskOverviewBarChart", tasks);
 
-  // Prepare data for the bar chart based on the tasks
+//   // Prepare data for the bar chart based on the tasks
+//   const pendingTasks = Array.isArray(tasks)
+//     ? tasks?.filter((task) => task?.taskStatus === "pending")
+//     : [];
+ 
+//   const completedTasks = Array.isArray(tasks)
+//     ? tasks?.filter((task) => task?.taskStatus === "completed")
+//     : [];
+//   const cancelledTasks = Array.isArray(tasks)
+//     ? tasks?.filter((task) => task?.taskStatus === "cancelled")
+//     : [];
+
+//   // Data for the bar chart
+//   const dataBar = [
+//     { name: "PENDING", total: tasks?.length, tasks: pendingTasks?.length },
+    
+//     { name: "COMPLETED", total: tasks?.length, tasks: completedTasks?.length },
+//     { name: "CANCELED", total: tasks?.length, tasks: cancelledTasks?.length },
+//   ];
+
+//   console.log("databar", dataBar);
+
+//   return (
+//     <div className="bg-[#F5F9FE] rounded-lg p-4">
+//       <ResponsiveContainer width="100%" height={300}>
+//         <BarChart data={dataBar} barGap={0}>
+//           <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+//           <YAxis tick={{ fontSize: 12 }} />
+//           <Tooltip />
+//           <Bar
+//             dataKey="total"
+//             barSize={14}
+//             fill="#1F2852"
+//             radius={[10, 10, 0, 0]}
+//           />
+//           <Bar
+//             dataKey="tasks"
+//             barSize={14}
+//             fill={({ payload }) => {
+//               switch (payload.name) {
+//                 case "COMPLETED":
+//                   return "#28a745"; // Green for completed
+//                 case "CANCELED":
+//                   return "#dc3545"; // Red for canceled
+//                 case "PENDING":
+//                   return "#1F2852"; // Navy blue for pending
+//                 default:
+//                   return "#3565A1"; // Default color
+//               }
+//             }}
+//             radius={[10, 10, 0, 0]}
+//           />
+//         </BarChart>
+//       </ResponsiveContainer>
+//     </div>
+//   );
+// };
+
+
+
+
+export const TaskOverviewBarChart = ({ tasks }) => {
+  // Filter tasks based on their status
   const pendingTasks = Array.isArray(tasks)
     ? tasks?.filter((task) => task?.taskStatus === "pending")
-    : [];
-  const onBoardingTasks = Array.isArray(tasks)
-    ? tasks?.filter((task) => task?.taskStatus === "onBoarding")
-    : [];
-  const onGoingTasks = Array.isArray(tasks)
-    ? tasks?.filter((task) => task?.taskStatus === "onGoing")
     : [];
   const completedTasks = Array.isArray(tasks)
     ? tasks?.filter((task) => task?.taskStatus === "completed")
@@ -95,56 +151,37 @@ export const TaskOverviewBarChart = ({ tasks }) => {
     ? tasks?.filter((task) => task?.taskStatus === "cancelled")
     : [];
 
-  // Data for the bar chart
+  // Prepare data for the bar chart
   const dataBar = [
-    { name: "PENDING", total: tasks?.length, tasks: pendingTasks?.length },
-    {
-      name: "ONBOARDING",
-      total: tasks?.length,
-      tasks: onBoardingTasks?.length,
-    },
-    { name: "ONGOING", total: tasks?.length, tasks: onGoingTasks?.length },
-    { name: "COMPLETED", total: tasks?.length, tasks: completedTasks?.length },
-    { name: "CANCELED", total: tasks?.length, tasks: cancelledTasks?.length },
+    { name: "PENDING", total: tasks?.length, tasks: pendingTasks?.length, fill: "#1F2852" }, // Navy blue
+    { name: "COMPLETED", total: tasks?.length, tasks: completedTasks?.length, fill: "#28a745" }, // Green
+    { name: "CANCELED", total: tasks?.length, tasks: cancelledTasks?.length, fill: "#dc3545" }, // Red
   ];
 
-  console.log("databar", dataBar);
-
   return (
-    <div className="bg-[#F5F9FE] rounded-lg p-4">
-      <ResponsiveContainer width="100%" height={300}>
+    <div className="bg-[#F5F9FE] p-4">
+      <ResponsiveContainer width="100%" height={330}>
         <BarChart data={dataBar} barGap={0}>
           <XAxis dataKey="name" tick={{ fontSize: 12 }} />
           <YAxis tick={{ fontSize: 12 }} />
           <Tooltip />
           <Bar
-            dataKey="total"
-            barSize={14}
-            fill="#1F2852"
-            radius={[10, 10, 0, 0]}
-          />
-          <Bar
             dataKey="tasks"
-            barSize={14}
-            fill={({ payload }) => {
-              switch (payload.name) {
-                case "COMPLETED":
-                  return "#28a745"; // Green for completed
-                case "CANCELED":
-                  return "#dc3545"; // Red for canceled
-                case "PENDING":
-                  return "#1F2852"; // Navy blue for pending
-                default:
-                  return "#3565A1"; // Default color
-              }
-            }}
+            barSize={35}
             radius={[10, 10, 0, 0]}
+            // Dynamically set fill color based on the `fill` field in dataBar
+            fill={({ payload }) => payload.fill}
           />
         </BarChart>
       </ResponsiveContainer>
     </div>
   );
 };
+
+
+
+
+
 // Line Chart Component for Income Overview
 // export const IncomeLineChart = ({tasks}) => {
 //   return (
@@ -225,7 +262,7 @@ export const IncomeLineChart = ({ tasks = [] }) => {
 
   return (
     <div className="p-4 bg-[#F5F9FE]">
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={330}>
         <AreaChart
           data={dataLine}
           margin={{

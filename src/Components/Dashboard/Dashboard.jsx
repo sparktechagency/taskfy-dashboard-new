@@ -41,10 +41,10 @@ const Dashboard = () => {
   return (
     <div className="w-full p-5 lg:p-10">
       {/* Overview Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 items-stretch gap-6">
         <div className="flex flex-col gap-6 mb-10">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-blue-900 mb-1">
-            Overview
+            Task Overview
           </h1>
 
           {/* Adjusting the layout for better responsiveness */}
@@ -74,17 +74,17 @@ const Dashboard = () => {
         </div>
 
         {/* Task Overview and Income Section */}
-        <div className="rounded-lg p-1">
-          <div className="flex justify-between mb-4">
-            <h1 className="text-2xl lg:text-3xl font-bold text-blue-900 mb-1">
-              Task overview
-            </h1>
+        <div className="h-full rounded-lg p-1">
+          <div className="flex justify-between mb-14">
+            {/* <h1 className="text-2xl lg:text-3xl font-bold text-[#fff] mb-1 ">
+              Task overview 
+            </h1> */}
             {/* <select className="bg-gray-100 px-2 py-1 rounded-lg text-sm lg:text-base">
               <option>Weekly</option>
               <option>Monthly</option>
             </select> */}
           </div>
-          <TaskOverviewBarChart tasks={tasksData} />
+        <div className="h-full">  <TaskOverviewBarChart tasks={tasksData} /></div>
           {/* <TaskOverviewBarChart /> */}
         </div>
 

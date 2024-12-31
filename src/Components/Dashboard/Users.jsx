@@ -151,7 +151,10 @@ export default function Users() {
     <div className="min-h-[90vh]">
       <div className="bg-[#E6ECF3] rounded-lg">
         <div className="flex justify-between p-6">
-          <h1 className="text-2xl font-bold text-[#1F2852]">Users List</h1>
+          <div className="flex justify-start">
+          <h1 className="text-2xl font-bold text-[#1F2852] ">Users List</h1>
+         
+          </div>
           <div className="flex gap-4 items-center">
             <ConfigProvider
               theme={{
@@ -180,6 +183,9 @@ export default function Users() {
                 }}
               />
             </ConfigProvider>
+            <Button type="primary" onClick={handleExport}>
+            Export to Excel
+          </Button>
           </div>
         </div>
         <div>
@@ -278,11 +284,11 @@ export default function Users() {
           </ConfigProvider>
         </div>
 
-        <div className="text-center mt-10 pb-10">
+        {/* <div className="text-center mt-10 pb-10">
           <Button type="primary" onClick={handleExport}>
             Export to Excel
           </Button>
-        </div>
+        </div> */}
 
         {/* View Modal */}
         <Modal
