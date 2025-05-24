@@ -7,10 +7,15 @@ import {
 } from "../Chart/DashboardChart";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
+import { useGetAllTasksQuery, useTaskdashboardOverviewQuery } from "../../Redux/api/dashboardApi";
 
 const Dashboard = () => {
   const [tasksData, setTasksData] = useState([]);
   const [loading, setLoading] = useState(true); // Set to true initially
+  const {data:taskCountOverview} = useTaskdashboardOverviewQuery();
+  const {data:tasks} = useGetAllTasksQuery();
+  // console.log('taskCountOverview',taskCountOverview)
+  // console.log('tasks',tasks)
 
   useEffect(() => {
     // console.log('Fetching data...');
@@ -52,21 +57,21 @@ const Dashboard = () => {
             <div className="flex flex-col gap-3">
               <InfoCard
                 title="Total task"
-                value="25"
+                value={taskCountOverview?.data?.totalTask}
                 color="bg-blue-400 w-full"
               />
               <InfoCard
                 title="On going task"
-                value="30"
+                value={taskCountOverview?.data?.totalOngoingTask}
                 color="bg-purple-400 w-full"
               />
             </div>
 
             <div className="flex flex-col gap-3">
-              <InfoCard title="Tasker" value="10" color="bg-green-400 w-full" />
+              <InfoCard title="Tasker" value={taskCountOverview?.data?.tasker} color="bg-green-400 w-full" />
               <InfoCard
                 title="Poster"
-                value="30"
+                value={taskCountOverview?.data?.poster}
                 color="bg-purple-300 w-full"
               />
             </div>
@@ -84,7 +89,7 @@ const Dashboard = () => {
               <option>Monthly</option>
             </select> */}
           </div>
-        <div className="h-full">  <TaskOverviewBarChart tasks={tasksData} /></div>
+        <div className="h-full">  <TaskOverviewBarChart tasks={tasks?.data} /></div>
           {/* <TaskOverviewBarChart /> */}
         </div>
 

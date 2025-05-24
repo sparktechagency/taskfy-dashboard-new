@@ -123,7 +123,7 @@ const authApi = baseApi.injectEndpoints({
 
     getAllUser: builder.query({
       query: () => ({
-        url: "/users",
+        url: "/users/all-users",
         method: "GET",
         // headers: {
         //   "content-type": "application/json",

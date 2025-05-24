@@ -26,6 +26,44 @@ const dashboardApi = baseApi.injectEndpoints({
       }),
       
 
+    taskdashboardOverview: builder.query({
+      query: () => ({
+        url: "/task/task-dashboard-overview",
+        method: "GET",
+        // headers: {
+        //   "content-type": "application/json",
+        //   Authorization: `${accessToken}`,
+        // },
+      }),
+      providesTags: ["task"],
+    }),
+
+    taskPendingCancelCompleteOverview: builder.query({
+      query: () => ({
+        url: "/task/task-pending-complete-cancel-overview",
+        method: "GET",
+        // headers: {
+        //   "content-type": "application/json",
+        //   Authorization: `${accessToken}`,
+        // },
+      }),
+      providesTags: ["task"],
+    }),
+
+
+    incomeChartList: builder.query({
+      query: (year) => ({
+        url: `/payment/all-income-rasio?year=${year}`,
+        method: "GET",
+        // headers: {
+        //   "content-type": "application/json",
+        //   Authorization: `${accessToken}`,
+        // },
+      }),
+      providesTags: ["task"],
+    }),
+
+
     getAllTasks: builder.query({
       query: () => ({
         url: "/task",
@@ -159,7 +197,10 @@ export const {
     useGetAllTasksPaymentQuery,
     useGetAllPendingWithdrawQuery,
     useGetAllConformWithdrawQuery,
-    useAdminConformWithdrawMutation
+    useAdminConformWithdrawMutation,
+    useIncomeChartListQuery,
+    useTaskPendingCancelCompleteOverviewQuery,
+    useTaskdashboardOverviewQuery
 
 
 

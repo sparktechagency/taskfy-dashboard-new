@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { Select } from "antd";
 import {
   LineChart,
   Line,
@@ -12,6 +13,9 @@ import {
   Area,
   AreaChart,
 } from "recharts";
+
+import { useState } from "react";
+import { useIncomeChartListQuery } from "../../Redux/api/dashboardApi";
 
 // // Dummy data for charts
 // const dataBar = [
@@ -139,23 +143,66 @@ export const InfoCard = ({ title, value, color }) => {
 
 
 
-export const TaskOverviewBarChart = ({ tasks }) => {
-  // Filter tasks based on their status
-  const pendingTasks = Array.isArray(tasks)
-    ? tasks?.filter((task) => task?.taskStatus === "pending")
-    : [];
-  const completedTasks = Array.isArray(tasks)
-    ? tasks?.filter((task) => task?.taskStatus === "completed")
-    : [];
-  const cancelledTasks = Array.isArray(tasks)
-    ? tasks?.filter((task) => task?.taskStatus === "cancelled")
-    : [];
+// export const TaskOverviewBarChart = ({ tasks }) => {
+//   console.log('chatt task====', tasks)
+  
+//   // Filter tasks based on their status
+//   const pendingTasks = Array.isArray(tasks)
+//     ? tasks?.filter((task) => task?.status === "pending")
+//     : [];
+//   const completedTasks = Array.isArray(tasks)
+//     ? tasks?.filter((task) => task?.status === "complete")
+//     : [];
+//   const cancelledTasks = Array.isArray(tasks)
+//     ? tasks?.filter((task) => task?.status === "cancel")
+//     : [];
 
-  // Prepare data for the bar chart
+//   // Prepare data for the bar chart
+//   const dataBar = [
+//     { name: "PENDING", total: tasks?.length, tasks: pendingTasks?.length, fill: "#1F2852" }, // Navy blue
+//     { name: "COMPLETED", total: tasks?.length, tasks: completedTasks?.length, fill: "#28a745" }, // Green
+//     { name: "CANCELED", total: tasks?.length, tasks: cancelledTasks?.length, fill: "#dc3545" }, // Red
+//   ];
+
+//   return (
+//     <div className="bg-[#F5F9FE] p-4">
+//       <ResponsiveContainer width="100%" height={330}>
+//         <BarChart data={dataBar} barGap={0}>
+//           <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+//           <YAxis tick={{ fontSize: 12 }} />
+//           <Tooltip />
+//           <Bar
+//             dataKey="tasks"
+//             barSize={35}
+//             radius={[10, 10, 0, 0]}
+//             fill={({ payload }) => payload.fill}
+//           />
+//         </BarChart>
+//       </ResponsiveContainer>
+//     </div>
+//   );
+// };
+
+
+
+// import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+
+
+export const TaskOverviewBarChart = ({ tasks }) => {
+  const pendingCount = Array.isArray(tasks)
+    ? tasks.filter((task) => task?.status === "pending").length
+    : 0;
+  const completedCount = Array.isArray(tasks)
+    ? tasks.filter((task) => task?.status === "complete").length
+    : 0;
+  const cancelledCount = Array.isArray(tasks)
+    ? tasks.filter((task) => task?.status === "cancel").length
+    : 0;
+
   const dataBar = [
-    { name: "PENDING", total: tasks?.length, tasks: pendingTasks?.length, fill: "#1F2852" }, // Navy blue
-    { name: "COMPLETED", total: tasks?.length, tasks: completedTasks?.length, fill: "#28a745" }, // Green
-    { name: "CANCELED", total: tasks?.length, tasks: cancelledTasks?.length, fill: "#dc3545" }, // Red
+    { name: "PENDING", tasks: pendingCount, fill: "#1F2852" },
+    { name: "COMPLETED", tasks: completedCount, fill: "#28a745" },
+    { name: "CANCELED", tasks: cancelledCount, fill: "#dc3545" },
   ];
 
   return (
@@ -163,14 +210,25 @@ export const TaskOverviewBarChart = ({ tasks }) => {
       <ResponsiveContainer width="100%" height={330}>
         <BarChart data={dataBar} barGap={0}>
           <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-          <YAxis tick={{ fontSize: 12 }} />
-          <Tooltip />
+          <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} allowDecimals={false} />
+          <Tooltip formatter={(value) => `${value} tasks`} />
           <Bar
             dataKey="tasks"
             barSize={35}
             radius={[10, 10, 0, 0]}
-            // Dynamically set fill color based on the `fill` field in dataBar
             fill={({ payload }) => payload.fill}
+            label={({ x, y, width, value }) => (
+              <text
+                x={x + width / 2}
+                y={y - 5}
+                fill="#000"
+                fontSize={12}
+                fontWeight="bold"
+                textAnchor="middle"
+              >
+                {value}
+              </text>
+            )}
           />
         </BarChart>
       </ResponsiveContainer>
@@ -178,6 +236,233 @@ export const TaskOverviewBarChart = ({ tasks }) => {
   );
 };
 
+
+export const IncomeLineChart = () => {
+  const [year, setYear] = useState(2025);
+  const MONTH_NAMES = [
+    "", // placeholder for 1-based index
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  ];
+
+  // Fetch data
+  const { data: incomeChartList, isLoading, isError } = useIncomeChartListQuery(year);
+
+  if (isLoading) {
+    return <div>Loading chart data...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading chart data.</div>;
+  }
+
+  const prepareChartDataByMonth = (data) => {
+    const monthlyData = {};
+    for (let i = 1; i <= 12; i++) {
+      monthlyData[i] = { month: i, totalIncome: 0 };
+    }
+
+    data.forEach(({ month, totalIncome }) => {
+      monthlyData[month] = { month, totalIncome };
+    });
+
+    return Object.values(monthlyData);
+  };
+
+  const incomeData = incomeChartList?.data ?? [];
+  const dataLine = prepareChartDataByMonth(incomeData);
+
+  if (!dataLine.length) {
+    return <div>No data available for the chart.</div>;
+  }
+
+  // Step 1: Calculate max income for Y axis
+  const maxIncome = Math.max(...dataLine.map(d => d.totalIncome), 20000);
+
+  return (
+    <div className="p-4 bg-[#F5F9FE]">
+      {/* Year selector */}
+      <div className="flex justify-end mb-4">
+        <Select
+          value={year}
+          style={{
+            width: 80,
+            height: 30,
+            fontSize: 12,
+            fontWeight: "bold",
+          }}
+          onChange={(value) => setYear(Number(value))}
+        >
+          {[2025, 2026, 2027, 2028, 2029, 2030].map((yr) => (
+            <Option key={yr} value={yr}>
+              {yr}
+            </Option>
+          ))}
+        </Select>
+      </div>
+
+      {/* Chart */}
+      <ResponsiveContainer width="100%" height={282}>
+        <AreaChart
+          data={dataLine}
+          margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.5} />
+          <XAxis
+            dataKey="month"
+            tick={{ fontSize: 12 }}
+            tickFormatter={(month) => MONTH_NAMES[month]}
+            tickMargin={5}
+          />
+          {/* Step 2: Use maxIncome and format ticks */}
+          <YAxis
+            tick={{ fontSize: 12 }}
+            tickMargin={5}
+            domain={[0, maxIncome]}
+            tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+          />
+          <defs>
+            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#838ff8" stopOpacity={0.8} />
+              <stop offset="100%" stopColor="#fdfdfd" stopOpacity={0.1} />
+            </linearGradient>
+          </defs>
+          <Tooltip
+            formatter={(value) => [`$${value}`, "Income"]}
+            labelFormatter={(label) => `Month: ${MONTH_NAMES[label]}`}
+            contentStyle={{
+              backgroundColor: "#1F2852",
+              borderColor: "#4f6ef9",
+              color: "#FFF",
+            }}
+            itemStyle={{ color: "#FFF" }}
+          />
+          <Area
+            type="monotone"
+            dataKey="totalIncome"
+            stroke="#023E8A"
+            fill="url(#colorUv)"
+            strokeWidth={3}
+            fillOpacity={1}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+
+
+
+// export const IncomeLineChart = () => {
+//   const [year, setYear] = useState(2025);
+//   const MONTH_NAMES = [
+//     "", // placeholder for 1-based index
+//     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+//     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+//   ];
+
+//   // Fetch data for selected year
+//   const { data: incomeChartList, isLoading, isError } = useIncomeChartListQuery(year);
+
+//   // Handle loading state
+//   if (isLoading) {
+//     return <div>Loading chart data...</div>;
+//   }
+
+//   // Handle error state
+//   if (isError) {
+//     return <div>Error loading chart data.</div>;
+//   }
+
+//   const prepareChartDataByMonth = (data) => {
+//   const monthlyData = {};
+//   for (let i = 1; i <= 12; i++) {
+//     monthlyData[i] = { month: i, totalIncome: 0 };
+//   }
+
+//   data.forEach(({ month, totalIncome }) => {
+//     monthlyData[month] = { month, totalIncome };
+//   });
+
+//   return Object.values(monthlyData);
+// };
+
+
+//   // Safely extract income data (default to empty array)
+//   const incomeData = incomeChartList?.data ?? [];
+
+//   // Prepare chart data with zero-filled months
+//   const dataLine = prepareChartDataByMonth(incomeData);
+
+//   // Show message if no data available
+//   if (!dataLine.length) {
+//     return <div>No data available for the chart.</div>;
+//   }
+
+//   return (
+//     <div className="p-4 bg-[#F5F9FE]">
+//       {/* Year selector */}
+//       <div className="flex justify-end mb-4">
+//         <Select
+//           value={year}
+//           style={{
+//             width: 80,
+//             height: 30,
+//             fontSize: 12,
+//             fontWeight: "bold",
+//           }}
+//           onChange={(value) => setYear(Number(value))}
+//         >
+//           {[2025, 2026, 2027, 2028, 2029, 2030].map((yr) => (
+//             <Option key={yr} value={yr}>{yr}</Option>
+//           ))}
+//         </Select>
+//       </div>
+
+//       {/* Chart */}
+//       <ResponsiveContainer width="100%" height={282}>
+//         <AreaChart
+//           data={dataLine}
+//           margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
+//         >
+//           <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.5} />
+//           <XAxis
+//             dataKey="month"
+//             tick={{ fontSize: 12 }}
+//             tickFormatter={(month) => MONTH_NAMES[month]}
+//             tickMargin={5}
+//           />
+//           <YAxis tick={{ fontSize: 12 }} tickMargin={5} />
+//           <defs>
+//             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+//               <stop offset="0%" stopColor="#838ff8" stopOpacity={0.8} />
+//               <stop offset="100%" stopColor="#fdfdfd" stopOpacity={0.1} />
+//             </linearGradient>
+//           </defs>
+//           <Tooltip
+//             formatter={(value) => [`$${value}`, "Income"]}
+//             labelFormatter={(label) => `Month: ${MONTH_NAMES[label]}`}
+//             contentStyle={{
+//               backgroundColor: "#1F2852",
+//               borderColor: "#4f6ef9",
+//               color: "#FFF",
+//             }}
+//             itemStyle={{ color: "#FFF" }}
+//           />
+//           <Area
+//             type="monotone"
+//             dataKey="totalIncome"
+//             stroke="#023E8A"
+//             fill="url(#colorUv)"
+//             strokeWidth={3}
+//             fillOpacity={1}
+//           />
+//         </AreaChart>
+//       </ResponsiveContainer>
+//     </div>
+//   );
+// };
 
 
 
@@ -229,78 +514,106 @@ export const TaskOverviewBarChart = ({ tasks }) => {
 //   );
 // };
 
-export const IncomeLineChart = ({ tasks = [] }) => {
-  // console.log("tasks in income line chart", tasks); // Log tasks for debugging
+// export const IncomeLineChart = ({ tasks = [] }) => {
+   
+//   const MONTH_NAMES = [
+//   "", // placeholder for 1-based month indexing
+//   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+//   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+// ];
 
-  // Prepare data for the chart from tasks
-  const prepareChartData = (tasks) => {
-    const groupedData = {};
+//   const [year, setYear] = useState(new Date().getFullYear());
+//  const {data:incomeChartList} = useIncomeChartListQuery(year);
+//     console.log('task chart list',incomeChartList?.data)
+//   console.log('year==', year)
+//   // Prepare data for the chart from tasks
+//   const prepareChartData = (tasks) => {
+//     const groupedData = {};
 
-    // Group tasks by date and sum their prices
-    tasks.forEach((task) => {
-      const date = new Date(task?.taskDate).toLocaleDateString(); // Convert to a readable date format
-      const price = task?.taskPrice;
+//     // Group tasks by date and sum their prices
+//     tasks.forEach((task) => {
+//       const date = new Date(task?.taskDate).toLocaleDateString(); // Convert to a readable date format
+//       const price = task?.taskPrice;
 
-      if (!groupedData[date]) {
-        groupedData[date] = { name: date, totalIncome: 0 };
-      }
+//       if (!groupedData[date]) {
+//         groupedData[date] = { name: date, totalIncome: 0 };
+//       }
 
-      groupedData[date].totalIncome += price;
-    });
+//       groupedData[date].totalIncome += price;
+//     });
 
-    // Convert the grouped data into an array format
-    return Object.values(groupedData);
-  };
+//     // Convert the grouped data into an array format
+//     return Object.values(groupedData);
+//   };
 
-  const dataLine = prepareChartData(tasks); // Prepare the chart data from tasks
-  // console.log("line chart data:", dataLine); // Log the prepared data
+//   const dataLine = prepareChartData(tasks); // Prepare the chart data from tasks
+//   // console.log("line chart data:", dataLine); // Log the prepared data
 
-  // Return early if there's no data to render
-  if (!dataLine.length) {
-    return <div>No data available for the chart.</div>;
-  }
+//   // Return early if there's no data to render
+//   if (!dataLine.length) {
+//     return <div>No data available for the chart.</div>;
+//   }
 
-  return (
-    <div className="p-4 bg-[#F5F9FE]">
-      <ResponsiveContainer width="100%" height={330}>
-        <AreaChart
-          data={dataLine}
-          margin={{
-            top: 10,
-            right: 20,
-            left: 0,
-            bottom: 0,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.5} />
-          <XAxis dataKey="name" tickMargin={5} tick={{ fontSize: 12 }} />
-          <YAxis tickMargin={5} tick={{ fontSize: 12 }} />
-          <defs>
-            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#838ff8" stopOpacity={0.8} />
-              <stop offset="100%" stopColor="#fdfdfd" stopOpacity={0.1} />
-            </linearGradient>
-          </defs>
-          <Tooltip
-            formatter={(value) => [`$${value}`, "Income"]}
-            labelFormatter={(label) => `Date: ${label}`}
-            contentStyle={{
-              backgroundColor: "#1F2852",
-              borderColor: "#4f6ef9",
-              color: "#FFF",
-            }}
-            itemStyle={{ color: "#FFF" }}
-          />
-          <Area
-            type="monotone"
-            dataKey="totalIncome" // Using totalIncome to match the prepared data
-            stroke="#023E8A"
-            fill="url(#colorUv)"
-            strokeWidth={3}
-            fillOpacity={1}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
-    </div>
-  );
-};
+//   return (
+//     <div className="p-4 bg-[#F5F9FE]">
+//       <div className="flex justify-end mb-4">
+//         <Select
+//           defaultValue={year}
+//           style={{
+//             width: 80,
+//             height: 30,
+//             fontSize: 12,
+//             fontWeight: "bold",
+//           }}
+//            onChange={(value) => setYear(value)}
+//         >
+//           <Option value="2025">2025</Option>
+//           <Option value="2026">2026</Option>
+//           <Option value="2027">2027</Option>
+//           <Option value="2028">2028</Option>
+//           <Option value="2029">2029</Option>
+//           <Option value="2030">2030</Option>
+//         </Select>
+//       </div>
+//       <ResponsiveContainer width="100%" height={282}>
+//         <AreaChart
+//           data={dataLine}
+//           margin={{
+//             top: 10,
+//             right: 20,
+//             left: 0,
+//             bottom: 0,
+//           }}
+//         >
+//           <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.5} />
+//           <XAxis dataKey="name" tickMargin={5} tick={{ fontSize: 12 }} />
+//           <YAxis tickMargin={5} tick={{ fontSize: 12 }} />
+//           <defs>
+//             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+//               <stop offset="0%" stopColor="#838ff8" stopOpacity={0.8} />
+//               <stop offset="100%" stopColor="#fdfdfd" stopOpacity={0.1} />
+//             </linearGradient>
+//           </defs>
+//           <Tooltip
+//             formatter={(value) => [`$${value}`, "Income"]}
+//             labelFormatter={(label) => `Date: ${label}`}
+//             contentStyle={{
+//               backgroundColor: "#1F2852",
+//               borderColor: "#4f6ef9",
+//               color: "#FFF",
+//             }}
+//             itemStyle={{ color: "#FFF" }}
+//           />
+//           <Area
+//             type="monotone"
+//             dataKey="totalIncome" // Using totalIncome to match the prepared data
+//             stroke="#023E8A"
+//             fill="url(#colorUv)"
+//             strokeWidth={3}
+//             fillOpacity={1}
+//           />
+//         </AreaChart>
+//       </ResponsiveContainer>
+//     </div>
+//   );
+// };

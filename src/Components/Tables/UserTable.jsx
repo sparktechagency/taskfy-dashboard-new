@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ConfigProvider, Table } from "antd";
-// import { useGetAllUserQuery } from "../../Redux/api/authApi";
+import { useGetAllUserQuery } from "../../Redux/api/authApi";
 
 const columns = [
   {
@@ -42,7 +42,8 @@ const columns = [
   },
   {
     title: "Delete Users",
-    dataIndex: "isDelete",
+    dataIndex: "isDeleted",
+    render: (isDeleted) => (isDeleted === false ? "Active" : "deleted"),
     responsive: ["md"], // Hide on smaller screens
   },
   {
@@ -53,9 +54,11 @@ const columns = [
 ];
 
 const UserTable = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  // const { data: usersData, isLoading } = useGetAllUserQuery(null);
+  // const [data, setData] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  const { data: usersData, isLoading } = useGetAllUserQuery(null);
+
+  console.log('userData', usersData?.data)
   
   //  useEffect(() => {
   //   if (usersData && usersData.data) {
@@ -63,22 +66,22 @@ const UserTable = () => {
   //   }
   // }, [usersData]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/data/userData.json");
-      //  const response1 = await useGetAllUserQuery(null)
-      //  console.log('response1',response.data);
-        setData(response?.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get("/data/userData.json");
+  //     //  const response1 = await useGetAllUserQuery(null)
+  //     //  console.log('response1',response.data);
+  //       setData(response?.data);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   // console.log("data",data)
 
@@ -104,8 +107,8 @@ const UserTable = () => {
       <div className="w-full overflow-x-auto rounded-xl p-4">
         <Table
           columns={columns}
-          dataSource={data}
-          loading={loading}
+          dataSource={usersData?.data}
+          loading={isLoading}
           pagination={{ pageSize: 5, responsive: true }}
           // pagination={{ pageSize: 5, showSizeChanger: true, responsive: true }}
           onChange={onChange}
