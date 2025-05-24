@@ -267,11 +267,20 @@ const AllTasks = () => {
       })),
       onFilter: (value, record) => record.category === value,
     },
+    // {
+    //   title: "Task Price",
+    //   dataIndex: "taskPrice",
+    //   key: "taskPrice",
+    //   render: (price) => `$${price}`,
+    // },
     {
       title: "Task Price",
       dataIndex: "taskPrice",
       key: "taskPrice",
+      responsive: ["sm"],
       render: (price) => `$${price}`,
+      sorter: (a, b) => a.taskPrice - b.taskPrice,
+      sortDirections: ["ascend", "descend"],
     },
     {
       title: "Task Status",
