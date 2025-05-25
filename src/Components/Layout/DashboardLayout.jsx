@@ -29,6 +29,12 @@ const DashboardLayout = () => {
     }
   }, [location]);
 
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    window.location.reload();
+  };
+
   return (
     <div className="h-screen">
       <Layout className="min-h-[100vh]">
@@ -442,7 +448,9 @@ const DashboardLayout = () => {
                       className={({ isActive }) =>
                         isActive ? "active-menu-item" : ""
                       }
+                      onClick={handleLogout}
                     >
+                      
                       Logout
                     </NavLink>
                   ),

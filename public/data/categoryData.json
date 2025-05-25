@@ -1,9 +1,11 @@
 [
-  { "id": 1, "name": "Outdoor Maintenance" },
-  { "id": 2, "name": "Home Maintenance" },
-  { "id": 3, "name": "Indoor Maintenance" },
-  { "id": 5, "name": "Electrical Work" },
-  { "id": 6, "name": "Cleaning Service" },
-  { "id": 7, "name": "Home Repair" },
-  { "id": 8, "name": "Furniture Assembly" }
+  { "id": 1, "name": "Cleaning" },
+  { "id": 2, "name": "Assemble" },
+  { "id": 3, "name": "Handyman" },
+  { "id": 5, "name": "Delivery" },
+  { "id": 6, "name": "Gardening" },
+  { "id": 7, "name": "Removalists" },
+  { "id": 8, "name": "Admin" },
+  { "id": 9, "name": "IT" },
+  { "id": 8, "name": "Photography" }
 ]

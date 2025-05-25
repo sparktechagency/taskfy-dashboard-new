@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useGetAllTasksRequestsQuery } from "../../Redux/api/dashboardApi";
 
 const { Option } = Select;
 
@@ -14,21 +15,25 @@ const TasksRequest = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
 
+  const {data:requestedTask, isLoading} = useGetAllTasksRequestsQuery(null);
+
+  console.log('requestedTask',requestedTask?.data);
+
   useEffect(() => {
-    const fetchStories = async () => {
-      try {
-        const response = await axios.get("/data/taskRequest.json");
-        const data = Array.isArray(response.data) ? response.data : [];
-        setRequests(data);
-        setFilteredRequests(data);
-      } catch (error) {
-        console.error("Error fetching stories data:", error);
-        setRequests([]);
-        setFilteredRequests([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+    // const fetchStories = async () => {
+    //   try {
+    //     const response = await axios.get("/data/taskRequest.json");
+    //     const data = Array.isArray(response.data) ? response.data : [];
+    //     setRequests(data);
+    //     setFilteredRequests(data);
+    //   } catch (error) {
+    //     console.error("Error fetching stories data:", error);
+    //     setRequests([]);
+    //     setFilteredRequests([]);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
 
     const fetchCategories = async () => {
       try {
@@ -40,7 +45,7 @@ const TasksRequest = () => {
       }
     };
 
-    fetchStories();
+    // fetchStories();
     fetchCategories();
   }, []);
 
@@ -48,14 +53,15 @@ const TasksRequest = () => {
     setSelectedCategory(value);
     if (value) {
       if (value === "all") {
-        setFilteredRequests(requests);
+        setFilteredRequests(requestedTask?.data);
       }
-      const filtered = requests.filter((request) => request.category === value);
+      const filtered = requestedTask?.data?.filter((request) => request.category === value);
       setFilteredRequests(filtered);
     } else {
       setFilteredRequests(requests);
     }
   };
+  
 
   const handleAccept = async (id) => {
     const result = await Swal.fire({
@@ -130,6 +136,8 @@ const TasksRequest = () => {
       }
     }
   };
+
+  console.log('filteredRequests',filteredRequests);
 
   if (loading) {
     return <div>Loading...</div>;

@@ -24,6 +24,8 @@ export default function Users() {
   const [loading, setLoading] = useState(true);
 
     const { data: usersData, isLoading } = useGetAllUserQuery(null);
+
+    const [blockUser] = useBlockedUserMutation();
   
     // console.log('userData', usersData?.data)
 
@@ -109,31 +111,31 @@ export default function Users() {
   };
 
   const handleBlock = async () => {
-    // try {
-    //   const res = await blockedUser(currentRecord._id).unwrap();
-    //   if (res.success) {
-    //     Swal.fire({
-    //       title: "User Blocked is Successfull!!",
-    //       text: "Your user has been blocked successfully.",
-    //       icon: "success",
-    //     });
-    //     setIsBlockModalVisible(false);
-    //     setIsViewModalVisible(false);
-    //   } else {
-    //     Swal.fire({
-    //       title: "Error",
-    //       text: res.message || "There was an issue blocked the user.",
-    //       icon: "error",
-    //     });
-    //   }
-    // } catch (error) {
-    //   const errorMessage = error.data?.message || "Something went wrong while blocked the user.";
-    //   Swal.fire({
-    //     title: "Error",
-    //     text: errorMessage,
-    //     icon: "error",
-    //   });
-    // }
+    try {
+      const res = await blockUser(currentRecord._id).unwrap();
+      if (res.success) {
+        Swal.fire({
+          title: "User Blocked is Successfull!!",
+          text: "Your user has been blocked successfully.",
+          icon: "success",
+        });
+        setIsBlockModalVisible(false);
+        setIsViewModalVisible(false);
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: res.message || "There was an issue blocked the user.",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      const errorMessage = error.data?.message || "Something went wrong while blocked the user.";
+      Swal.fire({
+        title: "Error",
+        text: errorMessage,
+        icon: "error",
+      });
+    }
   };
 
   return (
@@ -236,6 +238,22 @@ export default function Users() {
                   { text: "Poster", value: "poster" },
                 ]}
                 onFilter={(value, record) => record.role === value}
+              />
+              <Table.Column
+                title="Status"
+                dataIndex="isActive"
+                key="createdAt"
+                responsive={["sm", "xs"]}
+                render={(isActive) => (
+                  <span
+                    className={`${
+                      isActive ? "text-green-500 font-semibold" : "text-red-500 font-semibold"
+                    }`}
+                  >
+                    {isActive ? "Active" : "Inactive"}
+                  </span>
+                )}
+                
               />
               <Table.Column
                 title="User Created Date"

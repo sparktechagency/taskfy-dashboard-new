@@ -1,4 +1,4 @@
-import Cookies from "universal-cookie";
+// import Cookies from "universal-cookie";
 import { baseApi } from "../baseApi";
 
 // const cookie = new Cookies();
@@ -12,7 +12,7 @@ const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     signIn: builder.mutation({
       query: (data) => ({
-        url: "/users/login",
+        url: "/auth/login",
         method: "POST",
         body: data,
         headers: {
@@ -25,7 +25,7 @@ const authApi = baseApi.injectEndpoints({
     // Forget password
     ForgetPassword: builder.mutation({
       query: (data) => ({
-        url: `/users/forget-password`,
+        url: `/auth/forgot-password-otp`,
         method: "POST",
         body: data,
         headers: {
@@ -37,45 +37,54 @@ const authApi = baseApi.injectEndpoints({
 
     // Forget password Verify
     VerifyForgetPassword: builder.mutation({
-      query: (data) => ({
-        url: `/users/otp/forget-password`,
-        method: "PATCH",
-        body: data,
-      }),
-      invalidatesTags: ["user"],
+     query: (data) => {
+        const token = localStorage.getItem("forgetToken");
+        console.log({ token });
+        return {
+          url: "/auth/forgot-password-otp-match",
+          method: "PATCH",
+          body: data,
+          headers: {
+            "content-type": "application/json",
+            token: token,
+          },
+        };
+      },
     }),
     
 
     // Reset Password
     ResetPassword: builder.mutation({
-      query: (data) => ({
-        url: `/users/reset-password`,
-        method: "PATCH",
-        body: data,
-        // headers: {
-        //   "content-type": "application/json",
-        //   "Forget-password": `Forget-password ${localStorage.getItem(
-        //     "forgotToken"
-        //   )}`,
-        // },
-      }),
+       query: (data) => {
+        const token = localStorage.getItem("forgetToken");
+        console.log({ token });
+        return {
+          url: "/auth/forgot-password-reset",
+          method: "PATCH",
+          body: data,
+          headers: {
+            // "content-type": "application/json",
+            token: token,
+          },
+        };
+      },
       invalidatesTags: ["user"],
     }),
 
     // Reset Password
-    ResendOptCode: builder.mutation({
-      query: (data) => ({
-        url: `/users/otp/resend-otp`,
-        method: "PATCH",
-        body: data,
-        // headers: {
-        //   "content-type": "application/json",
-        //   "Forget-password": `Forget-password ${localStorage.getItem(
-        //     "forgotToken"
-        //   )}`,
-        // },
-      }),
-      invalidatesTags: ["user"],
+     ResendOtp: builder.mutation({
+      query: () => {
+        const token = localStorage.getItem("forgetToken");
+        return {
+          url: "/otp/resend-otp",
+          method: "PATCH",
+          // body: data,
+          headers: {
+            "content-type": "application/json",
+              token: token,
+          },
+        };
+      },
     }),
 
 
@@ -101,7 +110,7 @@ const authApi = baseApi.injectEndpoints({
       query: (data) => {
         const accessToken = localStorage.getItem('accessToken'); 
         return {
-          url: `/users/change-password`,
+          url: `/auth/change-password`,
           method: "PATCH",
           body: data,
           headers: {
@@ -194,9 +203,14 @@ const authApi = baseApi.injectEndpoints({
     // Create Admin
     blockedUser: builder.mutation({
       query: (id) => {
+        const accessToken = localStorage.getItem('accessToken'); 
         return {
           url: `/users/block/${id}`,
           method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
         
           
         };
@@ -217,7 +231,7 @@ export const {
   useForgetPasswordMutation,
   useVerifyForgetPasswordMutation,
   useResetPasswordMutation,
-  useResendOptCodeMutation,
+  useResendOtpMutation,
   useGetAllProviderQuery,
   useGetAllWorkerQuery,
   useCreateAdminMutation,

@@ -1,30 +1,18 @@
-import Cookies from "universal-cookie";
+// import Cookies from "universal-cookie";
 import { baseApi } from "../baseApi";
 
-const cookie = new Cookies();
-const accessToken = cookie.get("token");
+// const cookie = new Cookies();
+// const accessToken = cookie.get("token");
 
 const dashboardApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    addTask: builder.mutation({
-      query: (data) => ({
-        url: "/task/sign-in",
-        method: "POST",
-        body: data,
-        headers: {
-          "content-type": "application/json",
-        },
-      }),
-      invalidatesTags: ["task"],
-    }),
     SingleTask: builder.query({
-        query: (id) => ({
-          url: `/task/${id}`,
-          method: "GET",
-        }),
-        providesTags: ["task"],
+      query: (id) => ({
+        url: `/task/${id}`,
+        method: "GET",
       }),
-      
+      providesTags: ["task"],
+    }),
 
     taskdashboardOverview: builder.query({
       query: () => ({
@@ -50,7 +38,6 @@ const dashboardApi = baseApi.injectEndpoints({
       providesTags: ["task"],
     }),
 
-
     incomeChartList: builder.query({
       query: (year) => ({
         url: `/payment/all-income-rasio?year=${year}`,
@@ -62,7 +49,6 @@ const dashboardApi = baseApi.injectEndpoints({
       }),
       providesTags: ["task"],
     }),
-
 
     getAllTasks: builder.query({
       query: () => ({
@@ -76,22 +62,12 @@ const dashboardApi = baseApi.injectEndpoints({
       providesTags: ["task"],
     }),
 
-// admin tasks assign cencel and get pending task
+    // admin tasks assign cencel and get pending task
 
-    getAllPendingPaymentTask: builder.query({
-      query: () => ({
-        url: "/task?taskStatus=pending",
-        method: "GET",
-        // headers: {
-        //   "content-type": "application/json",
-        //   Authorization: `${accessToken}`,
-        // },
-      }),
-      providesTags: ["task"],
-    }),
+ 
     getAllTasksRequests: builder.query({
       query: () => ({
-        url: "/task/admin/task-requiest",
+        url: "/task?status=pending",
         method: "GET",
         // headers: {
         //   "content-type": "application/json",
@@ -103,16 +79,15 @@ const dashboardApi = baseApi.injectEndpoints({
 
     acceptTasksRequest: builder.mutation({
       query: (id) => {
-        console.log('accept task id', id)
+        console.log("accept task id", id);
         return {
-            url: `/task/task-conform/${id}`,
-            method: "PUT",
-            // headers: {
-            //   "content-type": "application/json",
-            //   Authorization: `${accessToken}`,
-            // },
-        }
-       
+          url: `/task/task-conform/${id}`,
+          method: "PUT",
+          // headers: {
+          //   "content-type": "application/json",
+          //   Authorization: `${accessToken}`,
+          // },
+        };
       },
       invalidatesTags: ["task"],
     }),
@@ -129,79 +104,72 @@ const dashboardApi = baseApi.injectEndpoints({
       invalidatesTags: ["task"],
     }),
 
-// task payment all get 
+    // task payment all get
 
-getAllTasksPayment: builder.query({
-    query: () => ({
-      url: "/payment",
-      method: "GET",
-      // headers: {
-      //   "content-type": "application/json",
-      //   Authorization: `${accessToken}`,
-      // },
+    getAllTasksPayment: builder.query({
+      query: () => ({
+        url: "/payment",
+        method: "GET",
+        // headers: {
+        //   "content-type": "application/json",
+        //   Authorization: `${accessToken}`,
+        // },
+      }),
+      // providesTags: ["task"],
     }),
-    // providesTags: ["task"],
-  }),
 
-// withdraw requested admin 
-getAllPendingWithdraw: builder.query({
-    query: () => ({
-      url: "/withdraw?status=pending",
-      method: "GET",
-      // headers: {
-      //   "content-type": "application/json",
-      //   Authorization: `${accessToken}`,
-      // },
+    // withdraw requested admin
+    getAllPendingWithdraw: builder.query({
+      query: () => ({
+        url: "/withdraw?status=pending",
+        method: "GET",
+        // headers: {
+        //   "content-type": "application/json",
+        //   Authorization: `${accessToken}`,
+        // },
+      }),
+      providesTags: ["withdraw"],
     }),
-    providesTags: ["withdraw"],
-  }),
 
-getAllConformWithdraw: builder.query({
-    query: () => ({
-      url: "/withdraw?status=paid",
-      method: "GET",
-      // headers: {
-      //   "content-type": "application/json",
-      //   Authorization: `${accessToken}`,
-      // },
+    getAllConformWithdraw: builder.query({
+      query: () => ({
+        url: "/withdraw?status=paid",
+        method: "GET",
+        // headers: {
+        //   "content-type": "application/json",
+        //   Authorization: `${accessToken}`,
+        // },
+      }),
+      providesTags: ["withdraw"],
     }),
-    providesTags: ["withdraw"],
-  }),
 
-  adminConformWithdraw: builder.mutation({
-    query: ({ id, data }) => ({
-      url: `/withdraw/admin-approved/${id}`,
-      method: "POST",
-      body: data,
-      // headers: {
-      //   "content-type": "application/json",
-      //   Authorization: `${accessToken}`,
-      // },
+    adminConformWithdraw: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/withdraw/admin-approved/${id}`,
+        method: "POST",
+        body: data,
+        // headers: {
+        //   "content-type": "application/json",
+        //   Authorization: `${accessToken}`,
+        // },
+      }),
+      invalidatesTags: ["withdraw"],
     }),
-    invalidatesTags: ["withdraw"],
-}),
-
-
-
   }),
 });
 
-export const { 
-  useGetAllTasksQuery, 
-    useAddTaskMutation, 
-    useSingleTaskQuery, 
-    useGetAllTasksRequestsQuery, 
-    useGetAllPendingPaymentTaskQuery,
-    useAcceptTasksRequestMutation, 
-    useCencelTasksRequestMutation,
-    useGetAllTasksPaymentQuery,
-    useGetAllPendingWithdrawQuery,
-    useGetAllConformWithdrawQuery,
-    useAdminConformWithdrawMutation,
-    useIncomeChartListQuery,
-    useTaskPendingCancelCompleteOverviewQuery,
-    useTaskdashboardOverviewQuery
-
-
-
+export const {
+  useGetAllTasksQuery,
+  useAddTaskMutation,
+  useSingleTaskQuery,
+  useGetAllTasksRequestsQuery,
+  useAcceptTasksRequestMutation,
+  useCencelTasksRequestMutation,
+  useGetAllTasksPaymentQuery,
+  useGetAllPendingWithdrawQuery,
+  useGetAllConformWithdrawQuery,
+  useAdminConformWithdrawMutation,
+  useIncomeChartListQuery,
+  useTaskPendingCancelCompleteOverviewQuery,
+  useTaskdashboardOverviewQuery,
 } = dashboardApi;

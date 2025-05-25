@@ -1,28 +1,24 @@
-import { Button, ConfigProvider, Form, Input, Typography } from "antd";
+import { Button, ConfigProvider, Form, Input } from "antd";
 import logo from "../../../public/images/logo.png";
 import { useNavigate } from "react-router-dom";
-// import { useResetPasswordMutation } from "../../Redux/api/authApi";
+import { useResetPasswordMutation } from "../../Redux/api/authApi";
 import Swal from "sweetalert2";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
   const [updatePassword] = useResetPasswordMutation();
   const onFinish = async(values) => {
-    // console.log("Success:", values);
-  //   const otpToken = localStorage.getItem('otpToken');
-  //   // console.log('otptoken', otpToken);
-  //   const data ={
-  //     password:values.newPassword,
-  //     verifyToken: otpToken
-  // }
-  // console.log('data response ', data);
+    const data ={
+      newPassword:values.newPassword,
+      confirmPassword:values.reEnterPassword
+  }
+  console.log('data response ', data);
     try {
       // Await the mutation response
-      // const res = await updatePassword(data).unwrap();
+      const res = await updatePassword(data).unwrap();
       // console.log('respon change password', res)
-      const res = true;
     
-      if (res) {
+      if (res.success) {
         Swal.fire({
           title: "Password Updated Successfully!!",
           text: "The user has been success!.",
@@ -95,7 +91,7 @@ const ChangePassword = () => {
               <Form.Item
                 name="newPassword"
                 className="text-white"
-                label={<p style={{ fontWeight: "500" }}>"New password"</p>}
+                label={<p style={{ fontWeight: "500" }}>New password</p>}
               >
                 <Input.Password
                   placeholder="Enter your password"
@@ -105,7 +101,9 @@ const ChangePassword = () => {
               <Form.Item
                 name="reEnterPassword"
                 className="text-white"
-                label="Confirm new Password"
+                // label="Confirm new Password"
+                
+                label={<p style={{ fontWeight: "500" }}>Confirm new Password</p>}
                 rules={[
                   { required: true, message: "Please confirm your password!" },
                   ({ getFieldValue }) => ({

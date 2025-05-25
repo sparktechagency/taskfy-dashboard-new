@@ -2,7 +2,7 @@
 import { LeftOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import { useSingleTaskQuery } from "../../Redux/api/dashboardApi";
+import { useSingleTaskQuery } from "../../Redux/api/dashboardApi";
 import axios from "axios";
 import image1 from "../../../public/images/task requies details image/1.jpg";
 import image2 from "../../../public/images/task requies details image/2.jpg";
@@ -14,33 +14,33 @@ const taskRequestImages = {
 const TasksDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [singleTask, setSingleTask] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+  // const [singleTask, setSingleTask] = useState({});
+  // const [isLoading, setIsLoading] = useState(true);
 
-  // const { data: singleTask, isLoading, isError } = useSingleTaskQuery(id);
+  const { data: singleTask, isLoading, isError } = useSingleTaskQuery(id);
 
   console.log("single task data", singleTask);
 
   // const [isModalVisible, setIsModalVisible] = useState(false);
   // const [currentRequest, setCurrentRequest] = useState(null);
 
-  useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const response = await axios.get(`/data/taskRequestedDetails.json`);
-        console.log("first task requested details ===>", response.data);
-        // const data = Array.isArray(response?.data) ? response.data : [];
-        // console.log("Fetched Data:", data);
-        setIsLoading(false);
-        setSingleTask(response.data);
-      } catch (error) {
-        setIsLoading(false);
-        console.error("Error fetching data:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchRequests = async () => {
+  //     try {
+  //       const response = await axios.get(`/data/taskRequestedDetails.json`);
+  //       console.log("first task requested details ===>", response.data);
+  //       // const data = Array.isArray(response?.data) ? response.data : [];
+  //       // console.log("Fetched Data:", data);
+  //       setIsLoading(false);
+  //       setSingleTask(response.data);
+  //     } catch (error) {
+  //       setIsLoading(false);
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
 
-    fetchRequests();
-  }, []);
+  //   fetchRequests();
+  // }, []);
 
   // Handle loading and error states
   if (isLoading) {
@@ -62,10 +62,10 @@ const TasksDetails = () => {
         <div className="grid grid-cols-1 gap-6">
           {/* Display Both Images */}
           <div className="grid grid-cols-5 gap-4">
-            {taskRequestImages?.images?.map((image, index) => (
+            {singleTask?.data?.taskImages?.map((image, index) => (
               <img
                 key={index}
-                src={image}
+                src={`http://10.0.70.163:5001/${image}`}
                 alt={`Task Image ${index + 1}`}
                 className="w-full h-64 object-cover rounded-lg shadow"
               />
@@ -80,11 +80,11 @@ const TasksDetails = () => {
                 </h2>
                 <p className="text-[#1F2852] ml-2 text-lg">
                   <span className="font-semibold text-[#023E8A]">Name:</span>{" "}
-                  {singleTask?.provider?.fullName}
+                  {singleTask?.data?.posterUserId?.fullName}
                 </p>
                 <p className="text-[#1F2852] ml-2 text-lg">
                   <span className="font-semibold text-[#023E8A]">Email:</span>{" "}
-                  {singleTask?.provider?.email}
+                  {singleTask?.data?.posterUserId?.email}
                 </p>
               </div>
             </div>
@@ -93,34 +93,33 @@ const TasksDetails = () => {
                 Task Name:{" "}
               </h2>
               <p className="text-[#023E8A] ml-2 text-xl font-bold">
-                {singleTask?.taskName}
+                {singleTask?.data?.taskName}
               </p>
             </div>
             <div className="mb-4 flex justify-start items-center">
               <h2 className="text-lg font-medium text-[#023E8A]">Details: </h2>
               <p className="text-[#1F2852] text-lg ml-2">
-                {singleTask?.taskDetails}
+                {singleTask?.data?.taskDetails}
               </p>
             </div>
 
             <div className="mb-4 flex justify-start items-center">
               <h2 className="text-lg font-medium text-[#023E8A]">Category: </h2>
               <p className="text-[#1F2852] ml-2 text-lg">
-                {singleTask?.category}
+                {singleTask?.data?.category}
               </p>
             </div>
 
             <div className="mb-4 flex justify-start items-center">
               <h2 className="text-lg font-medium text-[#023E8A]">Location: </h2>
               <p className="text-[#1F2852] ml-2 text-lg">
-                {singleTask?.location.type}
+                {singleTask?.data?.location.type}
               </p>
             </div>
 
             <div className="mb-4 flex justify-start items-center">
               <h2 className="text-lg font-medium text-[#023E8A]">Price: </h2>
-              <p className="text-[#1F2852] ml-2 text-lg">
-                {singleTask?.data?.taskPriceType}: ${singleTask?.taskPrice}
+              <p className="text-[#1F2852] ml-2 text-lg">${singleTask?.data?.price}
               </p>
             </div>
 
@@ -129,8 +128,8 @@ const TasksDetails = () => {
                 Task Date & Time:{" "}
               </h2>
               <p className="text-[#1F2852] ml-2 text-lg">
-                {singleTask?.taskTime},{" "}
-                {new Date(singleTask?.taskDate).toLocaleDateString()}
+                {/* {new Date(singleTask?.data?.taskStartDate).toLocaleDateString()} */}
+                {singleTask?.data?.taskStartDate}
               </p>
             </div>
 
@@ -138,16 +137,16 @@ const TasksDetails = () => {
               <h2 className="text-lg font-medium text-[#023E8A]">Status: </h2>
               <p
                 className={`font-semibold ml-2 text-lg ${
-                  singleTask?.taskStatus === "completed"
+                  singleTask?.status === "complete"
                     ? "text-green-500"
-                    : singleTask?.taskStatus === "onGoing"
+                    : singleTask?.status === "ongoing"
                     ? "text-blue-500"
-                    : singleTask?.taskStatus === "cancelled"
+                    : singleTask?.status === "cancel"
                     ? "text-red-500"
                     : "text-gray-500"
                 }`}
               >
-                {singleTask?.taskStatus}
+                {singleTask?.data?.status}
               </p>
             </div>
 
@@ -156,7 +155,7 @@ const TasksDetails = () => {
                 Work Type:{" "}
               </h2>
               <p className="text-[#1F2852] ml-2 text-lg">
-                {singleTask?.workType}
+                {singleTask?.data?.taskType}
               </p>
             </div>
           </div>
