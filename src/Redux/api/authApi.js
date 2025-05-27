@@ -39,7 +39,7 @@ const authApi = baseApi.injectEndpoints({
     VerifyForgetPassword: builder.mutation({
      query: (data) => {
         const token = localStorage.getItem("forgetToken");
-        console.log({ token });
+        // console.log({ token });
         return {
           url: "/auth/forgot-password-otp-match",
           method: "PATCH",
@@ -90,14 +90,15 @@ const authApi = baseApi.injectEndpoints({
 
    // Update Profile
    updateProfile: builder.mutation({
-    query: ({id, data}) => {
-      const accessToken = localStorage.getItem('accessToken'); // Retrieve token dynamically
+    query: ( formData) => {
+      const accessToken = localStorage.getItem('accessToken'); 
+      console.log('formData', formData);
       return {
-        url: `/users/${id}`,
-        method: "PUT",
-        body: data,
+        url: `/users/update-my-profile`,
+        method: "PATCH",
+        body: formData,
         headers: {
-          "content-type": "multipart/form-data",
+          // "content-type": "multipart/form-data",
           Authorization: `Bearer ${accessToken}`,
         },
       };
@@ -123,10 +124,17 @@ const authApi = baseApi.injectEndpoints({
     }),
 
     profile: builder.query({
-      query: () => ({
-        url: "/users/profile",
-        method: "GET",
-      }),
+        query: () => {
+        const accessToken = localStorage.getItem('accessToken'); 
+        return {
+          url: `/users/my-profile`,
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
       providesTags: ["user"],
     }),
 

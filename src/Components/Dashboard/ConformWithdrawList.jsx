@@ -4,6 +4,7 @@ import axios from "axios";
 import { ConfigProvider, Table, Input, Button, Space, Modal } from "antd";
 import { SearchOutlined, LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useGetAllWithdrawConfirmQuery } from "../../Redux/api/dashboardApi";
 // import { useGetAllConformWithdrawQuery, useGetAllPendingWithdrawQuery } from "../../Redux/api/dashboardApi";
 
 const formatDate = (dateString) => {
@@ -17,112 +18,101 @@ const formatDate = (dateString) => {
 
 const ConformWithdrawList = () => {
   const [searchText, setSearchText] = useState("");
-  const [conformWithdrawData, setConformWithdrawData] = useState([]);
   const navigate = useNavigate();
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
   // const [isViewModalVisible, setIsViewModalVisible] = useState(false);
 
-  const columns = [
-    {
-      title: "S.ID",
-      dataIndex: "index",
-      responsive: ["md"],
-      render: (text, record, index) => index + 1,
-    },
+ const columns = [
+     {
+       title: "S.ID",
+       dataIndex: "index",
+       responsive: ["md"],
+       render: (text, record, index) => index + 1,
+     },
+     {
+       title: "Tasker Name",
+       dataIndex: ["taskerUserId", "fullName"],
+       key: "fullName",
+       responsive: ["md", "xs"],
+     },
+     {
+       title: "Tasker Email",
+       dataIndex: ["taskerUserId", "email"],
+       key: "email",
+       responsive: ["md", "xs"],
+     },
+     
+     {
+       title: "Method",
+       dataIndex: "method",
+       key: "method",
+       responsive: ["sm"],
+     },
+     {
+       title: "Amount",
+       dataIndex: "amount",
+       key: "amount",
+       responsive: ["sm"],
+     },
+    
+     {
+       title: "Status",
+       dataIndex: "status",
+       key: "status",
+       responsive: ["sm", "xs"],
+       render: (text) => {
+         let color = "";
+         let displayText = text;
+         let fontWeight = "normal";
+ 
+         if (text === "request") {
+           color = "#FFD33C";
+           displayText = "Request";
+           fontWeight = "bold";
+         } else if (text === "completed") {
+           color = "green";
+           displayText = "Completed";
+           fontWeight = "bold";
+         }
+ 
+         return <span style={{ color, fontWeight }}>{displayText}</span>;
+       },
+     },
+      {
+       title: "Request Date",
+       dataIndex: "transactionDate",
+       key: "transactionDate",
+       render: (text) => formatDate(text),
+     },
+     {
+       title: "Action",
+       responsive: ["sm"],
+       render: (text, record) => (
+         <Space>
+           <Button
+             onClick={() => showViewModal(record)}
+             style={{ border: "1px solid", borderColor: "#023E8A" }}
+           >
+             View Details
+           </Button>
+         </Space>
+       ),
+     },
+   ];
 
-    {
-      title: "Worker Name",
-      dataIndex: ["worker", "fullName"],
-      responsive: ["md", "xs"],
-    },
-    {
-      title: "Withdraw Date",
-      dataIndex: "createdAt",
-      render: (text) => formatDate(text),
-    },
-    {
-      title: "Method",
-      dataIndex: "method",
-      responsive: ["sm"],
-    },
-    {
-      title: "Withdraw Amount",
-      dataIndex: "amount",
-      responsive: ["sm"],
-    },
-    {
-      title: "Withdraw Status",
-      dataIndex: "status",
-      key: "status",
-      responsive: ["sm", "xs"],
-      render: (text) => {
-        let color = "";
-        let displayText = text;
-        let fontWeight = "normal";
+  const { data: confirmWithdrawData, isLoading } = useGetAllWithdrawConfirmQuery();
 
-        if (text === "pending") {
-          color = "#FFD33C";
-          displayText = "Pending";
-          fontWeight = "bold";
-        } else if (text === "paid") {
-          color = "green";
-          displayText = "Paid";
-          fontWeight = "bold";
-        }
-
-        return <span style={{ color, fontWeight }}>{displayText}</span>;
-      },
-    },
-    {
-      title: "Action",
-      responsive: ["sm"],
-      render: (text, record) => {
-        // Button to trigger a pending withdraw action
-        return (
-          <Space>
-            <Button
-              onClick={() => showViewModal(record)}
-              style={{ border: "1px solid", borderColor: "#023E8A" }}
-              // Disable if already paid
-            >
-              View Details
-            </Button>
-          </Space>
-        );
-      },
-    },
-  ];
-
-  const [pendingWithdrawData, setPendingWithdrawData] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchStories = async () => {
-      try {
-        const response = await axios.get("/data/withdrowConform.json");
-        // console.log("all tasks ===> ", response);
-        const data = Array.isArray(response.data) ? response.data : [];
-        // console.log("Fetched Data task:", data); // Log the data format
-        setPendingWithdrawData(data);
-      } catch (error) {
-        console.error("Error fetching stories data:", error);
-        setPendingWithdrawData([]); // Set to empty array if fetching fails
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStories();
-  }, []);
-
-  // console.log('conformWithdrawDatas',pendingWithdrawData)
   const filteredData = useMemo(() => {
-    if (!searchText) return pendingWithdrawData;
-    return pendingWithdrawData.filter((item) =>
-      item.method.toLowerCase().includes(searchText.toLowerCase())
-    );
-  }, [pendingWithdrawData, searchText]);
+  const rawData = confirmWithdrawData?.data?.result;
+  if (!Array.isArray(rawData)) {
+    return [];
+  }
+  if (!searchText) return rawData;
+  return rawData.filter((item) =>
+    (item.method || "").toLowerCase().includes(searchText.toLowerCase())
+  );
+}, [confirmWithdrawData?.data, searchText]);
 
   const onSearch = (value) => {
     setSearchText(value);
@@ -212,7 +202,7 @@ const ConformWithdrawList = () => {
             <Table
               columns={columns}
               dataSource={filteredData}
-              loading={loading}
+              loading={isLoading}
               pagination={{ pageSize: 10 }}
               onChange={onChange}
               className="user-table"
@@ -221,8 +211,8 @@ const ConformWithdrawList = () => {
           </div>
         </ConfigProvider>
       </div>
-      {/* View Modal */}
-      <Modal
+
+      {/* <Modal
         title={
           <div className="pt-7">
             <h2 className="text-[#010515] text-2xl font-bold ">
@@ -240,7 +230,6 @@ const ConformWithdrawList = () => {
       >
         {currentRecord && (
           <div>
-            {/* <p className="text-xl font-bold my-2 text-start">User Information</p> */}
             <div className="flex flex-col text-lg pb-5  gap-y-2 text-start w-[80%] mx-auto mt-3">
               <p>
                 <span className="font-semibold ">Name:</span>{" "}
@@ -271,12 +260,45 @@ const ConformWithdrawList = () => {
                 {currentRecord.transactionId}
               </p>
             </div>
-            {/* <button
-                // onClick={showBlockModal}
-                className="bg-[#013564] text-white font-bold py-2 text-lg px-5 rounded-lg mt-8 w-[80%]"
+          </div>
+        )}
+      </Modal> */}
+
+      <Modal
+        title={
+          <div className="pt-7">
+            <h2 className="text-[#010515] text-2xl mb-5 font-bold text-center">
+              Tasker Withdraw Details
+            </h2>
+          </div>
+        }
+        open={isViewModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+        centered
+        width={600}
+      >
+        {currentRecord && (
+          <div className="w-full max-w-md mx-auto space-y-4 text-left">
+            {[
+              { label: "Name", value: currentRecord.taskerUserId.fullName },
+              { label: "Email", value: currentRecord.taskerUserId.email },
+              { label: "Phone No", value: currentRecord.taskerUserId.phone || "N/A" },
+              { label: "Amount", value: currentRecord.amount },
+              { label: "Method", value: currentRecord.method },
+              { label: "Status", value: currentRecord.status },
+              { label: "Request Date", value: formatDate(currentRecord.createdAt) },
+              { label: "Country Name", value: currentRecord.country || "N/A" },
+              { label: "Bank No", value: currentRecord.accountNumber || "N/A" },
+            ].map(({ label, value }) => (
+              <div
+                key={label}
+                className="flex justify-between items-center bg-gray-50 rounded-md p-3 shadow-sm"
               >
-                Block
-              </button> */}
+                <span className="font-semibold text-gray-700">{label}:</span>
+                <span className="text-gray-900 break-words max-w-[70%] text-right">{value}</span>
+              </div>
+            ))}
           </div>
         )}
       </Modal>

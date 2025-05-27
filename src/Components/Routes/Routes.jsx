@@ -42,6 +42,7 @@ import PendingWithdrawList from "../Dashboard/PendingWithdrawList";
 import CreateAdmin from "../Dashboard/CreateAdmin";
 import PendingPaymentTask from "../Dashboard/PendingPaymentTask";
 import ProtectedRoute from "../ProtectedRoute";
+import AddbankInfo from "../Dashboard/AddbankInfo";
 
 const router = createBrowserRouter([
   {
@@ -145,6 +146,10 @@ const router = createBrowserRouter([
           {
             path: "dashboard/create-admin",
             element: <CreateAdmin />,
+          },
+          {
+            path: "dashboard/add-bankinfo",
+            element: <AddbankInfo />,
           },
           {
             path: "edit-profile",

@@ -6,6 +6,7 @@ import users from "../../../public/images/dashboard-logo/users.svg";
 import stories from "../../../public/images/dashboard-logo/stories.svg";
 import setting from "../../../public/images/dashboard-logo/Setting.svg";
 import logout from "../../../public/images/dashboard-logo/logout.svg";
+import bank from "../../../public/images/dashboard-logo/bank.svg";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { ConfigProvider, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
@@ -17,12 +18,10 @@ const DashboardLayout = () => {
   const location = useLocation();
   const [openKeys, setOpenKeys] = useState([]);
 
-  // Function to check if any submenu under "Stories" is active
   const isSubMenuActive = (paths) => {
     return paths.some((path) => location.pathname.includes(path));
   };
 
-  // Detect active menu item and open the corresponding submenu
   useEffect(() => {
     if (isSubMenuActive(["all-stories", "story-request"])) {
       setOpenKeys(["stories"]);
@@ -187,34 +186,34 @@ const DashboardLayout = () => {
                         </NavLink>
                       ),
                     },
-                    {
-                      key: "task-pending-payment-task",
-                      icon: <span>&#8226;</span>,
-                      label: (
-                        <NavLink
-                          to="task-pending-payment-task"
-                          className={({ isActive }) =>
-                            isActive ? "active-menu-item" : ""
-                          }
-                        >
-                          Pending Payment Tasks
-                        </NavLink>
-                      ),
-                    },
-                    {
-                      key: "conform-payment-tasks",
-                      icon: <span>&#8226;</span>,
-                      label: (
-                        <NavLink
-                          to="conform-payment-tasks"
-                          className={({ isActive }) =>
-                            isActive ? "active-menu-item" : ""
-                          }
-                        >
-                          Confirm Payment Tasks
-                        </NavLink>
-                      ),
-                    },
+                    // {
+                    //   key: "task-pending-payment-task",
+                    //   icon: <span>&#8226;</span>,
+                    //   label: (
+                    //     <NavLink
+                    //       to="task-pending-payment-task"
+                    //       className={({ isActive }) =>
+                    //         isActive ? "active-menu-item" : ""
+                    //       }
+                    //     >
+                    //       Pending Payment Tasks
+                    //     </NavLink>
+                    //   ),
+                    // },
+                    // {
+                    //   key: "conform-payment-tasks",
+                    //   icon: <span>&#8226;</span>,
+                    //   label: (
+                    //     <NavLink
+                    //       to="conform-payment-tasks"
+                    //       className={({ isActive }) =>
+                    //         isActive ? "active-menu-item" : ""
+                    //       }
+                    //     >
+                    //       Confirm Payment Tasks
+                    //     </NavLink>
+                    //   ),
+                    // },
                     {
                       key: "task-payment-transaction",
                       icon: <span>&#8226;</span>,
@@ -424,6 +423,28 @@ const DashboardLayout = () => {
                       }
                     >
                       Create New Admin
+                    </NavLink>
+                  ),
+                },
+                {
+                  key: "dashboard/add-bankinfo",
+                  icon: (
+                    <img
+                      src={bank}
+                      alt="users"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("users") ? "active-icon" : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="dashboard/add-bankinfo"
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item" : ""
+                      }
+                    >
+                      Add Bank Info
                     </NavLink>
                   ),
                 },

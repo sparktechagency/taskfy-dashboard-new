@@ -1,114 +1,92 @@
-import { Button, ConfigProvider, Form, Input, Select, Upload } from "antd";
-import profileImage from "/images/profileImage.jpg";
-import { useEffect, useState } from "react";
+import { Button, ConfigProvider, Form, Input,  Upload } from "antd";
+// import profileImage from "/images/profileImage.jpg";
+// import { useEffect, useState } from "react";
 import { LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "react-day-picker/dist/style.css";
-import { jwtDecode } from "jwt-decode";
-// import { useSingleUserQuery, useUpdateProfileMutation } from "../../Redux/api/authApi";
+// import Swal from "sweetalert2";
+import { useProfileQuery, useUpdateProfileMutation } from "../../Redux/api/authApi";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const EditProfile = () => {
   const navigate = useNavigate();
-  // const [userUpdateData] = useUpdateProfileMutation();
-  // const userToken = localStorage.getItem('accessToken');
-  // const userData = jwtDecode(userToken);
-  // const {data:singleUserData} = useSingleUserQuery(userData.id);
-  // console.log('singleUserData',singleUserData?.data?.photo);
-const singleUserData ={
-  data:{
-    photo:true,
-  }
-}
+  const {data:profileData} = useProfileQuery();
+    console.log('profileData edit', profileData?.data);
+    const [updateProfile] = useUpdateProfileMutation();
+
+
   // const [imageUrl, setImageUrl] = useState('');
-  const [imageUrl, setImageUrl] = useState(profileImage);
+  const [imageUrl, setImageUrl] = useState(profileData?.data?.image);
 
   const [uploadedFile, setUploadedFile] = useState(null);
 
-  useEffect(() => {
-    if (singleUserData?.data?.photo) {
-      setImageUrl(singleUserData?.data?.photo); // Update image URL if available
+  useEffect (() => {
+    if (profileData?.data?.image) {
+      setImageUrl(profileData?.data?.image);
     }
-  }, [singleUserData]);
-  // console.log('imageurl', imageUrl);
+  }, [profileData]);
+
+ 
   const handleUploadChange = (info) => {
     console.log('info', info.file);
     
       setImageUrl(info.file); 
       setUploadedFile(info.file);
       
-     // If the file is being uploaded, show the preview
     const reader = new FileReader();
     reader.onload = (e) => {
-      setImageUrl(e.target.result); // Set the image preview URL
+      setImageUrl(e.target.result); 
     };
-    // console.log('info.file.originFileObj',info.file.originFileObj)
     reader.readAsDataURL(info.file); 
    
   };
 
-  const [profileData, setProfileData] = useState({
-    fullName: "Dr Mathews",
-    email: "dr.mathews@example.com",
-    phone: "01846875456",
-  
-  });
 
 
-
-  // const onFinish = async (values) => {
-
-  //   // Create a FormData object
-  //   const data = new FormData();
-  //    // Use the original file for upload
-  //   if (uploadedFile) {
-  //     data.append('photo', uploadedFile); // Append the file
-  //   }
-  //   data.append('photo', imageUrl); // Append the image URL or file
-  //   data.append('fullName', values.fullName);
-  //   data.append('phone', values.phone);
-  //   data.append('email', values.email);
 
 
    
-  //   console.log('updateUserData', data);
-
-  //   try {
-  //     // Await the mutation response
-  //     // const res = await userUpdateData({ id: userData.id, data }).unwrap();
-  //     // console.log('update res user', res);
-  //     const res = true;
-   
-  //     if (res) {
-  //       Swal.fire({
-  //         title: "Profile updated successfully",
-  //         text: "The user has been updated.",
-  //         icon: "success",
-  //       });
-  //       navigate("/profile");
-  //     } else {
-  //       Swal.fire({
-  //         title: "Error",
-  //         text: "There was an issue updating the user.",
-  //         icon: "error",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating user:", error);
-  //     if (error.data) {
-  //       Swal.fire({
-  //         title: `${error.data.message}`,
-  //         text: "Something went wrong while updating the profile.",
-  //         icon: "error",
-  //       });
-  //     }
-  //   }
-  // };
   
   
   const onFinish = async (values) => {
-    // console.log("Success:", values);
-    navigate("/profile");
+    console.log("Success:", values);
+    console.log('uploadedFile', uploadedFile);
+
+    const formData = new FormData();
+    formData.append("fullName", values.fullName);
+    formData.append("phone", values.phone);
+    if(uploadedFile){
+      formData.append("image", uploadedFile);
+    }
+    try {
+      const res = await updateProfile(formData).unwrap();
+      console.log('update profile response', res);
+      if (res.success) {
+        Swal.fire({
+          title: "Profile Updated Successfully!",
+          text: "The profile has been updated successfully.",
+          icon: "success",
+        });
+        navigate("/profile");
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: res.message || "There was an issue updating the profile.",
+          icon: "error",
+        });
+      }
+      
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      Swal.fire({
+        title: "Error",
+        text: error.data.message,
+        icon: "error",
+      });
+      
+    }
+    // navigate("/profile");
   };
   
   return (
@@ -119,16 +97,16 @@ const singleUserData ={
             className="text-black text-xl mr-4 cursor-pointer"
             onClick={() => navigate(-1)}
           />
-          <h2 className="text-black text-2xl font-semibold">Profile Information</h2>
+          <h2 className="text-black text-2xl font-semibold">Edit Profile Information</h2>
         </div>
       </div>
 
       <div className="bg-white rounded-lg shadow-lg p-6 md:mx-10 xl:mx-40">
         <div className="relative flex flex-col items-center bg-[#3565A1] p-5 rounded mb-5">
             <img
-              src={imageUrl}
+               src={imageUrl || "/default-profile.png"}
               alt="Profile"
-              className="rounded-full md:w-28 md:h-28 lg:h-32 lg:w-32 xl:w-36 xl:h-36 object-cover mb-2"
+              className="rounded-full border-4 border-white md:w-28 md:h-28 lg:h-32 lg:w-32 xl:w-36 xl:h-36 object-cover mb-2"
             />
             <Upload
               name="avatar"
@@ -142,7 +120,7 @@ const singleUserData ={
                 </span>
               </div>
             </Upload>
-            <h2 className="text-lg font-bold text-white">{profileData.fullName}</h2>
+            <h2 className="text-lg font-bold text-white">{profileData?.data?.fullName}</h2>
           </div>
        
         <div className="">
@@ -163,9 +141,9 @@ const singleUserData ={
                 id="editProfileForm"
                 onFinish={onFinish}
                 initialValues={{
-                  fullName: profileData.fullName,
-                  email: profileData.email,
-                  phone: profileData.phone,
+                  fullName: profileData?.data?.fullName,
+                  email: profileData?.data?.email,
+                  phone: profileData?.data?.phone,
                 }}
               >
                 <div className="flex flex-col">
@@ -200,7 +178,7 @@ const singleUserData ={
                   }
                   name="email"
                 >
-                  <Input className=" rounded-lg h-10 font-semibold" />
+                  <Input disabled className=" rounded-lg h-10 font-semibold" />
                 </Form.Item>
                 <div className="flex flex-col">
                   <Form.Item
@@ -217,7 +195,7 @@ const singleUserData ={
                     }
                     name="phone"
                   >
-                    <Input className="  rounded-lg h-10 font-semibold" />
+                    <Input  className="rounded-lg h-10 font-semibold" />
                   </Form.Item>
                 </div>
                 <Button

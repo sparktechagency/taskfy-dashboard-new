@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { Input, Button, Form, ConfigProvider, Select } from "antd";
+
+import { Input, Button, Form, ConfigProvider } from "antd";
 import {
-  CalendarOutlined,
   EditOutlined,
   LeftOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import profileImage from "../../../public/images/profileImage.jpg";
-import { jwtDecode } from "jwt-decode";
+// import profileImage from "../../../public/images/profileImage.jpg";
+import { useProfileQuery } from "../../Redux/api/authApi";
 
 // const countryCodes = [
 //   { label: "+1", value: "US", flag: "https://flagcdn.com/w320/us.png" },
@@ -20,15 +19,8 @@ import { jwtDecode } from "jwt-decode";
 // ];
 
 const Profile = () => {
-  // const userToken = localStorage.getItem('accessToken');
-  // const tokenData = jwtDecode(userToken);
- 
-  const [profileData, setProfileData] = useState({
-    fullName: "Dr Mathews",
-    email: "dr.mathews@example.com",
-    phone: "01846875456",
-  
-  });
+  const {data:profileData} = useProfileQuery();
+  console.log('profileData', profileData?.data);
   const navigate = useNavigate();
 
   const handleEditClick = () => {
@@ -59,11 +51,11 @@ const Profile = () => {
       <div className="bg-white rounded-lg shadow-lg p-6 xl:mx-40">
       <div className="flex flex-col items-center bg-[#3565A1] p-5 rounded mb-5">
             <img
-              src={profileImage}
+              src={`http://10.0.70.163:5001/${profileData?.data?.image}`}
               alt="Profile"
               className="rounded-full w-36 h-36 object-cover mb-4"
             />
-            <h2 className="text-xl lg:text-2xl font-bold text-white">{`${profileData.fullName}`}</h2>
+            <h2 className="text-xl lg:text-2xl font-bold text-white">{``}</h2>
           </div>
           <div className="flex-1">
             <ConfigProvider
@@ -94,7 +86,8 @@ const Profile = () => {
                   >
                     <Input
                       className=" rounded-lg h-10 font-semibold "
-                      value={profileData.fullName}
+                      value={profileData?.data?.fullName || ""}
+                      // value="Amit Kumar"
                       readOnly
                     />
                   </Form.Item>
@@ -114,7 +107,8 @@ const Profile = () => {
                 >
                   <Input
                     className=" rounded-lg h-10 font-semibold"
-                    value={profileData.email}
+                    value={profileData?.data?.email || ""}
+                    // value="b4aZ0@example.com"
                     readOnly
                   />
                 </Form.Item>
@@ -134,7 +128,8 @@ const Profile = () => {
                   >
                     <Input
                     className="  rounded-lg h-10 font-semibold"
-                    value={profileData.phone}
+                    value={profileData?.data?.phone || ""}
+                    // value="+91 1234567890"
                     readOnly
                   />
                   </Form.Item>

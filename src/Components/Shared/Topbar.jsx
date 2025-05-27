@@ -4,42 +4,48 @@ import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { useState, useEffect } from "react";
 // import profileImg from "../../../public/images/profile.svg";
 import profileImg from "../../../public/images/user.svg";
+import { useAdminNotificationQuery } from "../../Redux/api/dashboardApi";
+import moment from "moment";
 
 const { useBreakpoint } = Grid;
 
-const notifications = [
-  {
-    id: 1,
-    message: "Emily sent you a message.",
-    time: "16 minutes ago",
-  },
-  {
-    id: 2,
-    message: "Emily sent you a message.",
-    time: "16 minutes ago",
-  },
-  {
-    id: 3,
-    message: "Emily sent you a message.",
-    time: "16 minutes ago",
-  },
-  {
-    id: 4,
-    message: "Emily sent you a message.",
-    time: "16 minutes ago",
-  },
-  {
-    id: 5,
-    message: "Emily sent you a message.",
-    time: "16 minutes ago",
-  },
-];
+// const notifications = [
+//   {
+//     id: 1,
+//     message: "Emily sent you a message.",
+//     time: "16 minutes ago",
+//   },
+//   {
+//     id: 2,
+//     message: "Emily sent you a message.",
+//     time: "16 minutes ago",
+//   },
+//   {
+//     id: 3,
+//     message: "Emily sent you a message.",
+//     time: "16 minutes ago",
+//   },
+//   {
+//     id: 4,
+//     message: "Emily sent you a message.",
+//     time: "16 minutes ago",
+//   },
+//   {
+//     id: 5,
+//     message: "Emily sent you a message.",
+//     time: "16 minutes ago",
+//   },
+// ];
 
+// eslint-disable-next-line react/prop-types
 const Topbar = ({ collapsed, setCollapsed }) => {
+  const {data:allNotifications} = useAdminNotificationQuery();
   const [notificationCount, setNotificationCount] = useState(
-    notifications.length
+    allNotifications?.data?.length
   );
   const [isDropdownVisible, setDropdownVisible] = useState(false);
+
+console.log('allNotifications',allNotifications)
 
   const navigate = useNavigate(); // Use useNavigate for navigation
 
@@ -79,20 +85,21 @@ const Topbar = ({ collapsed, setCollapsed }) => {
         <p className="text-2xl font-bold text-[#013564]">Notifications</p>
         <hr className="bg-black h-0.5 my-2" />
       </div>
-      {notifications.map((notification) => (
-        <div className="text-start" key={notification.id}>
-          <div className="flex gap-2 md:w-2/3">
+      {allNotifications?.data?.map((notification) => (
+        <div className="text-start" key={notification._id}>
+          <div className="flex gap-2 md:w-2/2">
             <BellOutlined
               style={{
                 color: "#013564",
                 background: "#B1D7FA",
                 padding: "0 5px",
                 fontSize: "20px",
+                borderRadius: "10%",
               }}
             />
             <div className="flex flex-col items-start">
               <p>{notification.message}</p>
-              <p className="text-gray-400">{notification.time}</p>
+              <p className="text-gray-400">{moment(notification.createdAt).fromNow()}</p>
             </div>
           </div>
         </div>

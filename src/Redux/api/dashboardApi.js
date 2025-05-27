@@ -81,8 +81,8 @@ const dashboardApi = baseApi.injectEndpoints({
       query: (id) => {
         console.log("accept task id", id);
         return {
-          url: `/task/task-conform/${id}`,
-          method: "PUT",
+          url: `/task/accept/${id}`,
+          method: "PATCH",
           // headers: {
           //   "content-type": "application/json",
           //   Authorization: `${accessToken}`,
@@ -94,8 +94,8 @@ const dashboardApi = baseApi.injectEndpoints({
 
     cencelTasksRequest: builder.mutation({
       query: (id) => ({
-        url: `/task/task-cencel/${id}`,
-        method: "PUT",
+        url: `/task/cancel/${id}`,
+        method: "PATCH",
         // headers: {
         //   "content-type": "application/json",
         //   Authorization: `${accessToken}`,
@@ -107,21 +107,24 @@ const dashboardApi = baseApi.injectEndpoints({
     // task payment all get
 
     getAllTasksPayment: builder.query({
-      query: () => ({
-        url: "/payment",
-        method: "GET",
-        // headers: {
-        //   "content-type": "application/json",
-        //   Authorization: `${accessToken}`,
-        // },
-      }),
+      query: () => {
+        const accessToken = localStorage.getItem('accessToken'); 
+        return {
+          url: `/payment`,
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
       // providesTags: ["task"],
     }),
 
     // withdraw requested admin
-    getAllPendingWithdraw: builder.query({
+    getAllWithdrawRequest: builder.query({
       query: () => ({
-        url: "/withdraw?status=pending",
+        url: "/withdraw?status=request",
         method: "GET",
         // headers: {
         //   "content-type": "application/json",
@@ -131,9 +134,9 @@ const dashboardApi = baseApi.injectEndpoints({
       providesTags: ["withdraw"],
     }),
 
-    getAllConformWithdraw: builder.query({
+    getAllWithdrawConfirm: builder.query({
       query: () => ({
-        url: "/withdraw?status=paid",
+        url: "/withdraw?status=completed",
         method: "GET",
         // headers: {
         //   "content-type": "application/json",
@@ -144,32 +147,48 @@ const dashboardApi = baseApi.injectEndpoints({
     }),
 
     adminConformWithdraw: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/withdraw/admin-approved/${id}`,
-        method: "POST",
-        body: data,
-        // headers: {
-        //   "content-type": "application/json",
-        //   Authorization: `${accessToken}`,
-        // },
-      }),
+      query: (id) => {
+        const accessToken = localStorage.getItem('accessToken'); 
+        return {
+          url: `/withdraw/paid/${id}`,
+          method: "PATCH",
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
       invalidatesTags: ["withdraw"],
+    }),
+    adminNotification: builder.query({
+      query: () => {
+        const accessToken = localStorage.getItem('accessToken'); 
+        return {
+          url: `/notification/admin-all`,
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
     }),
   }),
 });
 
 export const {
   useGetAllTasksQuery,
-  useAddTaskMutation,
+  // useAddTaskMutation,
   useSingleTaskQuery,
   useGetAllTasksRequestsQuery,
   useAcceptTasksRequestMutation,
   useCencelTasksRequestMutation,
   useGetAllTasksPaymentQuery,
-  useGetAllPendingWithdrawQuery,
-  useGetAllConformWithdrawQuery,
+  useGetAllWithdrawRequestQuery,
+  useGetAllWithdrawConfirmQuery,
   useAdminConformWithdrawMutation,
   useIncomeChartListQuery,
   useTaskPendingCancelCompleteOverviewQuery,
   useTaskdashboardOverviewQuery,
+  useAdminNotificationQuery
 } = dashboardApi;
