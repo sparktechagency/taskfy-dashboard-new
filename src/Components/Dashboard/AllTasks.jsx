@@ -164,10 +164,19 @@ const AllTasks = () => {
   console.log('allTaskData',allTaskData);
 
   const handleExport = () => {
-    const exportData = allTaskData.map((user) => ({
-      Name: user.name,
-      Email: user.email,
-      "Live Location": user.liveLocation,
+    const exportData = allTaskData?.data?.map((task) => ({
+      taskName: task.taskName,
+      taskDetails: task.taskDetails,
+      price: task.price,
+      taskType: task.taskType,
+      taskTimeDate: task.taskTimeDate,
+      taskAddress: task.taskAddress,
+      category: task.category,
+      certainTime: task.certainTime,
+      ratingStatus: task.ratingStatus,
+      paymentStatus: task.paymentStatus,
+      createdAt: task.createdAt,
+
     }));
 
     const now = new Date();
@@ -284,11 +293,11 @@ const AllTasks = () => {
     // },
     {
       title: "Task Price",
-      dataIndex: "taskPrice",
-      key: "taskPrice",
+      dataIndex: "price",
+      key: "price",
       responsive: ["sm"],
       render: (price) => `$${price}`,
-      sorter: (a, b) => a.taskPrice - b.taskPrice,
+      sorter: (a, b) => a.price - b.price,
       sortDirections: ["ascend", "descend"],
     },
     {
@@ -338,7 +347,7 @@ const AllTasks = () => {
       <div className="flex justify-between items-center">
         <div>
         <Tabs
-        defaultActiveKey="onGoing"
+        defaultActiveKey="ongoing"
         onChange={(key) => {
           setActiveTab(key);
           setSearchText(""); // Optionally reset search when switching tabs
@@ -350,9 +359,9 @@ const AllTasks = () => {
           borderRadius: "5px",
         }}
         items={[
-          { key: "onGoing", label: "Ongoing", children: null },
-          { key: "completed", label: "Completed", children: null },
-          { key: "cancelled", label: "Cancelled", children: null },
+          { key: "ongoing", label: "Ongoing", children: null },
+          { key: "complete", label: "Completed", children: null },
+          { key: "cancel", label: "Cancelled", children: null },
         ]}
       />
         </div>

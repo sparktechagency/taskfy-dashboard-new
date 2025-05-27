@@ -31,10 +31,10 @@ export default function Users() {
 
   const handleExport = () => {
     // Map the data to include only the relevant fields: Name, Email, and Live Location
-    const exportData = userData.map((user) => ({
-      Name: user.name,
+    const exportData = usersData?.data?.map((user) => ({
+      Name: user.fullName,
       Email: user.email,
-      "Live Location": user.liveLocation,
+      // "Live Location": user.liveLocation,
     }));
 
     // Get the current date and time
