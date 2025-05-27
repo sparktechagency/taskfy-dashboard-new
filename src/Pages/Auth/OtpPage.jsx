@@ -3,81 +3,79 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../public/images/logo.png";
 import OTPInput from "react-otp-input";
-// import { useResendOptCodeMutation, useVerifyForgetPasswordMutation } from "../../Redux/api/authApi";
+import {   useResendOtpMutation, useVerifyForgetPasswordMutation } from "../../Redux/api/authApi";
 import Swal from "sweetalert2";
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 
 const OtpPage = () => {
   const [otp, setOtp] = useState("");
   const [verifyOtpPassword] = useVerifyForgetPasswordMutation();
-  const [resendOptCodeSend] = useResendOptCodeMutation();
+  const [resendOptCodeSend] = useResendOtpMutation();
   const navigate = useNavigate();
 
-  const handleOTPSubmit = async() => {
-    if (otp.length < 4) {
-      alert("Please fill in all OTP fields");
-    } else {
-      
-    //   const otpToken = localStorage.getItem('otpToken');
-    // const data = {
-    //     otp: otp,
-    //     verifyToken: otpToken
-    
-    // }
+    const handleOTPSubmit = async () => {
+    if (otp.length < 6) {
+      Swal.fire({
+          title: "Please fill in all OTP fields",
+          text: "",
+          icon: "failure",
+        });
+      return;
+    }
+
+    const token = localStorage.getItem("forgetToken");
+    if (!token) {
+      Swal.fire({
+          title: "Error!. Please start the reset process again.",
+          text: "The user has been verify successfull!.",
+          icon: "success",
+        });
+      navigate("/forgot-password");
+      return;
+    }
+
     try {
-      // Await the mutation response
-      // const res = await verifyOtpPassword(data).unwrap();
-    
-      // console.log('verify otp password res', res);
-      // localStorage.setItem("otpToken", res.data);
-       // Storing tokens separately
-       const res = true;
-      if (res) {
+      const data = { otp };
+      console.log("Success: otp", otp);
+      const response = await verifyOtpPassword(data).unwrap();
+      console.log("OTP verification response:", response);
+
+      if (response.success) {
+        // localStorage.setItem("verifiedOtpToken", response?.data?.token);
+        // toast.success("OTP verified successfully!");
         Swal.fire({
-          title: "Verify OTP Succesfull !!",
+          title: "OTP verified successfully!",
           text: "The user has been verify successfull!.",
           icon: "success",
         });
         navigate("/update-password");
-      } else {
+      }
+      
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      if(error.data.success === false){
         Swal.fire({
-          title: "Error",
-          text: "There was an issue otp verify success .",
-          icon: "error",
+          title: error?.data?.message,
+          text: "The user has been invalid OTP!.",
+          icon: "success",
         });
       }
-    } catch (error) {
-      console.error("Error user otp verify :", error);
-      if(error.data){
-        Swal.fire({
-            title: `${error?.data?.message}`,
-            text: "Something went wrong while otp verify.",
-            icon: "error",
-          });
-      }
-      
-    }
-      
+        
     }
   };
+
 
   const handleOTPResendSubmit = async() => {
     
     try {
-      // Await the mutation response
-    //   const otpToken = localStorage.getItem('otpToken');
-    //   const tokenData = jwtDecode(otpToken)._doc;
-    // const data = {
-    //     email: tokenData.email
     
-    // }
-    //   const res = await resendOptCodeSend(data).unwrap();
+      const res = await resendOptCodeSend().unwrap();
     
-    //   console.log('verify otp password res', res);
+      console.log('verify otp password res', res);
       // localStorage.setItem("otpToken", res.data);
-       // Storing tokens separately
-       const otp = 124569;
-      if (otp) {
+      //  Storing tokens separately
+      //  const otp = 124569;
+      if (res.success) {
         Swal.fire({
           title: "Check email for OTP !!",
           text: "The user has been verify successfull!.",
@@ -141,7 +139,7 @@ const OtpPage = () => {
                       hover:border-b-[#1F2852] focus:bg-transparent focus:border-b-[#1F2852] rounded mr-2 sm:mr-5"
                       value={otp}
                       onChange={setOtp}
-                      numInputs={4}
+                      numInputs={6}
                       renderInput={(props) => <input {...props} required />}
                     />
                   </div>

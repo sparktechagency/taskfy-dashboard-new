@@ -1,32 +1,33 @@
 import { Button, ConfigProvider, Form, Input } from "antd";
 import Swal from "sweetalert2";
-// import { useCreateAdminMutation } from "../../Redux/api/authApi";
+import { useCreateAdminMutation } from "../../Redux/api/authApi";
 import { useNavigate } from "react-router-dom";
 
 const CreateAdmin = () => {
-  // const [creatAdmin] = useCreateAdminMutation();
+  const [creatAdmin] = useCreateAdminMutation();
   const navigate = useNavigate();
 
   // onFinish is async because it handles the form submission
   const onFinish = async (values) => {
-    // console.log("create admin Success:", values);
+    console.log("create admin Success:", values);
   
-    // const data = {
-    //   fullName: values.fullName,
-    //   email: values.email,
-    //   password: values.password,
-    //   role: "admin",
-    // };
+    const data = {
+      fullName: values.fullName,
+      email: values.email,
+      password: values.password,
+      phone: values.phone,
+      role: "admin",
+    };
 
-    // console.log("create admin Success data:", data);
+    console.log("create admin Success data:", data);
 
     try {
       // Await the mutation response
-      // const res = await creatAdmin(data).unwrap();
+      const res = await creatAdmin(data).unwrap();
     
-      // console.log('create admin response', res);
+      console.log('create admin response', res);
     
-      if (values) {
+      if (res.success) {
         Swal.fire({
           title: "Admin Created Successfully!",
           text: "The admin account has been created.",
@@ -98,6 +99,7 @@ const CreateAdmin = () => {
                 <Input
                   placeholder="Enter your Full Name"
                   className="py-2 px-3 text-xl bg-site-color border-base-color text-base-color hover:bg-transparent hover:border-base-color focus:bg-transparent focus:border-button-color"
+                  required
                 />
               </Form.Item>
               
@@ -110,6 +112,7 @@ const CreateAdmin = () => {
                   type="email"
                   placeholder="Enter your email"
                   className="py-2 px-3 text-xl bg-site-color border-base-color text-base-color hover:bg-transparent hover:border-base-color focus:bg-transparent focus:border-button-color"
+                  required
                 />
               </Form.Item>
               
@@ -147,6 +150,18 @@ const CreateAdmin = () => {
                 <Input.Password
                   placeholder="Enter your password"
                   className="py-2 px-3 text-xl bg-site-color border-base-color text-base-color hover:bg-transparent hover:border-base-color focus:bg-transparent focus:border-button-color"
+                />
+              </Form.Item>
+               <Form.Item
+                name="phone"
+                className="text-white"
+                label={<p style={{ fontWeight: "500" }}>Phone</p>}
+              >
+                <Input
+                  type="number"
+                  placeholder="Enter your phne number"
+                  className="py-2 px-3 text-xl bg-site-color border-base-color text-base-color hover:bg-transparent hover:border-base-color focus:bg-transparent focus:border-button-color"
+                  required
                 />
               </Form.Item>
 

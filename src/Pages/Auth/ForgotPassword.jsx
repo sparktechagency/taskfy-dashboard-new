@@ -2,7 +2,7 @@ import { Button, ConfigProvider, Form, Input } from "antd";
 
 import { useNavigate } from "react-router-dom";
 import logo from "../../../public/images/logo.png";
-// import { useForgetPasswordMutation } from "../../Redux/api/authApi";
+import { useForgetPasswordMutation } from "../../Redux/api/authApi";
 import Swal from "sweetalert2";
 
 const ForgotPassword = () => {
@@ -10,18 +10,19 @@ const ForgotPassword = () => {
   const [forgatePassword] = useForgetPasswordMutation();
 
   const onFinish = async(values) => {
-    // const data = {
-    //   email:values.email,
-    // }
+    const data = {
+      email:values.email,
+    }
     try {
     //   // Await the mutation response
-    //   const res = await forgatePassword(data).unwrap();
+      const res = await forgatePassword(data).unwrap();
+      console.log('forgot password response', res);
   
     //    // Storing tokens separately
-    // localStorage.setItem("otpToken", res.data);
+    localStorage.setItem("forgetToken", res.data.forgetToken);
    
     
-      if (values) {
+      if (res.success) {
         Swal.fire({
           title: "Verify OTP! Check Email!!",
           text: "The user has been Check Email!.",

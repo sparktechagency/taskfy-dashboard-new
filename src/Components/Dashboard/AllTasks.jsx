@@ -139,8 +139,8 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { DownloadOutlined, SearchOutlined } from "@ant-design/icons";
-
 import * as XLSX from "xlsx";
+import { useGetAllTasksQuery } from "../../Redux/api/dashboardApi";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -153,15 +153,18 @@ const formatDate = (dateString) => {
 
 const AllTasks = () => {
   const [searchText, setSearchText] = useState("");
-  const [tasksData, setTasksData] = useState([]);
+  // const [tasksData, setTasksData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("onGoing");
+  const [activeTab, setActiveTab] = useState("ongoing");
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
 
+  const {data:allTaskData} = useGetAllTasksQuery();
+  console.log('allTaskData',allTaskData);
+
   const handleExport = () => {
-    const exportData = tasksData.map((user) => ({
+    const exportData = allTaskData.map((user) => ({
       Name: user.name,
       Email: user.email,
       "Live Location": user.liveLocation,
@@ -180,19 +183,21 @@ const AllTasks = () => {
     XLSX.writeFile(workbook, `${xlSheetName}.xlsx`);
   };
 
+
+
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await axios.get("/data/tasks.json");
-        const data = Array.isArray(response.data) ? response.data : [];
-        setTasksData(data);
-      } catch (error) {
-        console.error("Error fetching tasks data:", error);
-        setTasksData([]); // Set to empty array if fetching fails
-      } finally {
-        setLoading(false);
-      }
-    };
+    // const fetchTasks = async () => {
+    //   try {
+    //     const response = await axios.get("/data/tasks.json");
+    //     const data = Array.isArray(response.data) ? response.data : [];
+    //     setTasksData(data);
+    //   } catch (error) {
+    //     console.error("Error fetching tasks data:", error);
+    //     setTasksData([]); // Set to empty array if fetching fails
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
 
     const fetchCategories = async () => {
       try {
@@ -207,16 +212,17 @@ const AllTasks = () => {
       }
     };
 
-    fetchTasks();
+    // fetchTasks();
     fetchCategories();
   }, []);
 
   useEffect(() => {
-    let filtered = tasksData;
+    let filtered = allTaskData?.data;
+    console.log('first task requested details ===>', filtered);
 
     // Filter by the active tab's task status
     if (activeTab) {
-      filtered = tasksData.filter((item) => item.taskStatus === activeTab);
+      filtered = allTaskData?.data?.filter((item) => item.status === activeTab);
     }
 
     // Apply search text filter
@@ -229,7 +235,9 @@ const AllTasks = () => {
     }
 
     setFilteredData(filtered);
-  }, [tasksData, searchText, activeTab]);
+  }, [allTaskData?.data, searchText, activeTab]);
+
+  console.log('filterData',filteredData);
 
   const onSearch = (value) => {
     setSearchText(value);
@@ -246,6 +254,7 @@ const AllTasks = () => {
       title: "Full Name",
       dataIndex: ["provider", "fullName"],
       key: "name",
+      render: (text, record) => record.posterUserId.fullName,
     },
     {
       title: "Email",
@@ -284,11 +293,11 @@ const AllTasks = () => {
     },
     {
       title: "Task Status",
-      dataIndex: "taskStatus",
-      key: "taskStatus",
+      dataIndex: "status",
+      key: "status",
     },
     {
-      title: "Withdraw Date",
+      title: "Created Date",
       dataIndex: "createdAt",
       render: (text) => formatDate(text),
     },

@@ -23,6 +23,12 @@ export default function Users() {
   const [currentRecord, setCurrentRecord] = useState(null);
   const [loading, setLoading] = useState(true);
 
+    const { data: usersData, isLoading } = useGetAllUserQuery(null);
+
+    const [blockUser] = useBlockedUserMutation();
+  
+    // console.log('userData', usersData?.data)
+
   const handleExport = () => {
     // Map the data to include only the relevant fields: Name, Email, and Live Location
     const exportData = userData.map((user) => ({
@@ -64,31 +70,16 @@ export default function Users() {
   //   }
   // }, [usersData]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/data/userData.json");
-        //  const response1 = await useGetAllUserQuery(null)
-        //  console.log('response',response.data);
-        setUserData(response?.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+ 
 
   // console.log("userData",userData)
 
   const filteredData = useMemo(() => {
-    if (!searchText) return userData;
-    return userData.filter((item) =>
+    if (!searchText) return usersData?.data;
+    return usersData?.data?.filter((item) =>
       item.fullName.toLowerCase().includes(searchText.toLowerCase())
     );
-  }, [userData, searchText]);
+  }, [usersData?.data, searchText]);
 
   const onSearch = (value) => {
     setSearchText(value);
@@ -120,31 +111,31 @@ export default function Users() {
   };
 
   const handleBlock = async () => {
-    // try {
-    //   const res = await blockedUser(currentRecord._id).unwrap();
-    //   if (res.success) {
-    //     Swal.fire({
-    //       title: "User Blocked is Successfull!!",
-    //       text: "Your user has been blocked successfully.",
-    //       icon: "success",
-    //     });
-    //     setIsBlockModalVisible(false);
-    //     setIsViewModalVisible(false);
-    //   } else {
-    //     Swal.fire({
-    //       title: "Error",
-    //       text: res.message || "There was an issue blocked the user.",
-    //       icon: "error",
-    //     });
-    //   }
-    // } catch (error) {
-    //   const errorMessage = error.data?.message || "Something went wrong while blocked the user.";
-    //   Swal.fire({
-    //     title: "Error",
-    //     text: errorMessage,
-    //     icon: "error",
-    //   });
-    // }
+    try {
+      const res = await blockUser(currentRecord._id).unwrap();
+      if (res.success) {
+        Swal.fire({
+          title: "User Blocked is Successfull!!",
+          text: "Your user has been blocked successfully.",
+          icon: "success",
+        });
+        setIsBlockModalVisible(false);
+        setIsViewModalVisible(false);
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: res.message || "There was an issue blocked the user.",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      const errorMessage = error.data?.message || "Something went wrong while blocked the user.";
+      Swal.fire({
+        title: "Error",
+        text: errorMessage,
+        icon: "error",
+      });
+    }
   };
 
   return (
@@ -206,7 +197,7 @@ export default function Users() {
           >
             <Table
               dataSource={filteredData}
-              loading={loading}
+              loading={isLoading}
               pagination={{ pageSize: 15 }}
               rowKey={(record) => record.serialId}
               scroll={{ x: true }}
@@ -247,6 +238,22 @@ export default function Users() {
                   { text: "Poster", value: "poster" },
                 ]}
                 onFilter={(value, record) => record.role === value}
+              />
+              <Table.Column
+                title="Status"
+                dataIndex="isActive"
+                key="createdAt"
+                responsive={["sm", "xs"]}
+                render={(isActive) => (
+                  <span
+                    className={`${
+                      isActive ? "text-green-500 font-semibold" : "text-red-500 font-semibold"
+                    }`}
+                  >
+                    {isActive ? "Active" : "Inactive"}
+                  </span>
+                )}
+                
               />
               <Table.Column
                 title="User Created Date"

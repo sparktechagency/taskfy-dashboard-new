@@ -7,7 +7,7 @@ import DashboardLayout from "../Layout/DashboardLayout";
 import PrivacyPolicy from "../Dashboard/settings/PrivacyPolicy";
 import Profile from "../../Pages/Profile/Profile";
 import Logout from "../Dashboard/Logout";
-// import ChangePassword from "../../Pages/Auth/ChangePassword";
+import ChangePassword from "../../Pages/Auth/ChangePassword";
 // import BookingDetails from "../Dashboard/UserDetails";
 import Notifications from "../Dashboard/Notifications";
 import EditProfile from "../../Pages/Profile/EditProfile";
@@ -41,6 +41,8 @@ import ConformWithdrawList from "../Dashboard/ConformWithdrawList";
 import PendingWithdrawList from "../Dashboard/PendingWithdrawList";
 import CreateAdmin from "../Dashboard/CreateAdmin";
 import PendingPaymentTask from "../Dashboard/PendingPaymentTask";
+import ProtectedRoute from "../ProtectedRoute";
+import AddbankInfo from "../Dashboard/AddbankInfo";
 
 const router = createBrowserRouter([
   {
@@ -69,7 +71,9 @@ const router = createBrowserRouter([
       },
       {
         path: "",
-        element: <DashboardLayout />,
+        element: (<ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>),
         children: [
           {
             path: "/",
@@ -142,6 +146,10 @@ const router = createBrowserRouter([
           {
             path: "dashboard/create-admin",
             element: <CreateAdmin />,
+          },
+          {
+            path: "dashboard/add-bankinfo",
+            element: <AddbankInfo />,
           },
           {
             path: "edit-profile",

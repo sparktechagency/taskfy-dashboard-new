@@ -1,25 +1,25 @@
 import { Button, ConfigProvider, Form, Input, Typography } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-// import { useChangePasswordMutation } from "../../../Redux/api/authApi";
+import { useChangePasswordMutation } from "../../../Redux/api/authApi";
 
 const SettingsChangePassword = () => {
-    // const [changePassword] =useChangePasswordMutation(); 
+    const [changePassword] =useChangePasswordMutation(); 
   const navigate = useNavigate();
   const onFinish = async (values) => {
     console.log("Success:", values);
   
     try {
-      // const data = {
-      //   newPassword: values.newPassword,
-      //   oldPassword: values.currentPassword,
-      // };
+      const data = {
+        newPassword: values.newPassword,
+        oldPassword: values.currentPassword,
+      };
       
       // // Await the mutation response
-      // const res = await changePassword(data).unwrap();
+      const res = await changePassword(data).unwrap();
       // console.log('Change password response:', res);
   
-      if (values) {
+      if (res.success) {
         Swal.fire({
           title: "Successfully Changed Password!",
           text: "Your password has been changed successfully.",

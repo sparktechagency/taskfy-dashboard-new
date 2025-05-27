@@ -1,7 +1,7 @@
 import { LeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import image1 from "../../../public/images/task requies details image/1.jpg"
 import image2 from "../../../public/images/task requies details image/2.jpg"
@@ -13,6 +13,7 @@ const taskRequestImages ={
 
 const TaskRequestDetails = () => {
   const { id } = useParams();
+  console.log('task id ', id)
   const navigate = useNavigate();
 
   const [taskRequests, setTaskRequests] = useState({});

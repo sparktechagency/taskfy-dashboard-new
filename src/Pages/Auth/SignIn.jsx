@@ -4,32 +4,32 @@ import {
   Input,
   ConfigProvider,
   Form,
-  Typography,
 } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../public/images/logo.png";
-// import { useSignInMutation } from "../../Redux/api/authApi";
+import { useSignInMutation } from "../../Redux/api/authApi";
 import Swal from "sweetalert2";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  // const [login] = useSignInMutation();
+  const [login] = useSignInMutation();
 
   const onFinish = async(values) => {
-    // const data = {
-    //   email: values.email,
-    //   password: values.password,
+    const data = {
+      email: values.email,
+      password: values.password,
       
-    // };
+    };
 
     try {
       // Await the mutation response
-    //   const res = await login(data).unwrap();
-    //    // Storing tokens separately
-    // localStorage.setItem("accessToken", res.data.accessToken);
-    // localStorage.setItem("refreshToken", res.data.refreshToken);
+      const res = await login(data).unwrap();
+      console.log('login res', res);
+       // Storing tokens separately
+    localStorage.setItem("accessToken", res.data.accessToken);
+    localStorage.setItem("refreshToken", res.data.refreshToken);
     
-      if (values) {
+      if (res.success) {
         Swal.fire({
           title: "Login Successfully!",
           text: "The user has been login!.",

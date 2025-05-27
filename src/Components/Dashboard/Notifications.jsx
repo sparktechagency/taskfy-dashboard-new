@@ -1,68 +1,68 @@
-import React, { useState } from "react";
-import { ConfigProvider, Tooltip } from "antd";
-import JustModal from "../../utils/Modal";
+
 import {
-  DeleteOutlined,
   BellOutlined,
-  ArrowLeftOutlined,
   LeftOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useAdminNotificationQuery } from "../../Redux/api/dashboardApi";
+import moment from "moment";
 
-const data = [
-  {
-    name: "Alice",
-    feedback: "You have a story request.",
-    time: "Fri, 12:30pm",
-  },
-  {
-    name: "Bob",
-    feedback: "An user joined in app.",
-    time: "Fri, 12:30pm",
-  },
-  {
-    name: "Charlie",
-    feedback: "You have a story request.",
-    time: "Fri, 12:30pm",
-  },
-  {
-    name: "David",
-    feedback: "You have a story request.",
-    time: "Fri, 12:30pm",
-  },
-  {
-    name: "Eve",
-    feedback: "An user joined in app.",
-    time: "Fri, 12:30pm",
-  },
-  {
-    name: "Frank",
-    feedback: "You have a story request.",
-    time: "Fri, 12:30pm",
-  },
-  {
-    name: "Grace",
-    feedback: "You have a story request.",
-    time: "Fri, 12:30pm",
-  },
-  {
-    name: "Hank",
-    feedback: "An user joined in app.",
-    time: "Fri, 12:30pm",
-  },
-  {
-    name: "Ivy",
-    feedback: "You have a story request.",
-    time: "Fri, 12:30pm",
-  },
-  {
-    name: "Jack",
-    feedback: "You have a story request.",
-    time: "Fri, 12:30pm",
-  },
-];
+// const data = [
+//   {
+//     name: "Alice",
+//     feedback: "You have a story request.",
+//     time: "Fri, 12:30pm",
+//   },
+//   {
+//     name: "Bob",
+//     feedback: "An user joined in app.",
+//     time: "Fri, 12:30pm",
+//   },
+//   {
+//     name: "Charlie",
+//     feedback: "You have a story request.",
+//     time: "Fri, 12:30pm",
+//   },
+//   {
+//     name: "David",
+//     feedback: "You have a story request.",
+//     time: "Fri, 12:30pm",
+//   },
+//   {
+//     name: "Eve",
+//     feedback: "An user joined in app.",
+//     time: "Fri, 12:30pm",
+//   },
+//   {
+//     name: "Frank",
+//     feedback: "You have a story request.",
+//     time: "Fri, 12:30pm",
+//   },
+//   {
+//     name: "Grace",
+//     feedback: "You have a story request.",
+//     time: "Fri, 12:30pm",
+//   },
+//   {
+//     name: "Hank",
+//     feedback: "An user joined in app.",
+//     time: "Fri, 12:30pm",
+//   },
+//   {
+//     name: "Ivy",
+//     feedback: "You have a story request.",
+//     time: "Fri, 12:30pm",
+//   },
+//   {
+//     name: "Jack",
+//     feedback: "You have a story request.",
+//     time: "Fri, 12:30pm",
+//   },
+// ];
 
 const Notifications = () => {
+  const {data:allNotifications} = useAdminNotificationQuery();
+  console.log('allNotifications======', allNotifications?.data);
   const navigate = useNavigate();
   // const [profileModalOpen, setProfileModalOpen] = useState(false);
 
@@ -93,25 +93,25 @@ const Notifications = () => {
         </div>
         <div className=" rounded-lg p-4">
           <div className="bg-white p-4 rounded-lg">
-            {data.map((notification, index) => (
-              <div key={index} className="flex items-start gap-4 mb-4">
-                <BellOutlined
-                  style={{
-                    color: "#013564",
-                    background: "#B1D7FA",
-                    padding: "8px",
-                    fontSize: "20px",
-                    // borderRadius: "50%",
-                  }}
-                />
-                <div className="flex-1">
-                  <p className="text-black text-base">
-                    {notification.feedback}
-                  </p>
-                  <p className="text-gray-400 text-sm">{notification.time}</p>
-                </div>
-              </div>
-            ))}
+            {allNotifications?.data?.map((notification) => (
+                    <div className="text-start" key={notification._id}>
+                      <div className="flex gap-2 md:w-2/2">
+                        <BellOutlined
+                          style={{
+                            color: "#013564",
+                            background: "#B1D7FA",
+                            padding: "0 5px",
+                            fontSize: "20px",
+                            borderRadius: "10%",
+                          }}
+                        />
+                        <div className="flex flex-col items-start">
+                          <p>{notification.message}</p>
+                          <p className="text-gray-400">{moment(notification.createdAt).fromNow()}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
           </div>
         </div>
       </div>

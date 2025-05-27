@@ -1,11 +1,39 @@
-import { useEffect, useState, useMemo } from "react";
-import axios from "axios";
+import {  useState, useMemo } from "react";
+// import axios from "axios";
 import { ConfigProvider, Table, Input } from "antd";
 import { SearchOutlined, LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-// import { useGetAllTasksPaymentQuery } from "../../Redux/api/dashboardApi";
+import { useGetAllTasksPaymentQuery } from "../../Redux/api/dashboardApi";
+import moment from "moment";
 
-const columns = [
+
+
+const PaymentTransaction = () => {
+  const [searchText, setSearchText] = useState("");
+  // const [taskConformPaymentData, setTaskConformPamentData] = useState([]);
+  const navigate = useNavigate();
+  // const [loading, setLoading] = useState(true);
+  const { data:taskPayment, isLoading } = useGetAllTasksPaymentQuery();
+
+
+console.log('taskPayment',taskPayment?.data?.result);
+
+  const filteredData = useMemo(() => {
+    if (!searchText) return taskPayment?.data?.result;
+    return taskPayment?.data?.result?.filter((item) =>
+      item.method.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }, [taskPayment, searchText]);
+
+  const onSearch = (value) => {
+    setSearchText(value);
+  };
+
+  const onChange = (filters, extra) => {
+    console.log("params", filters, extra);
+  };
+
+  const columns = [
   {
     title: "S.ID",
     dataIndex: "index",
@@ -15,75 +43,49 @@ const columns = [
 
   {
     title: "Provider Name",
-    dataIndex: ["providerId", "fullName"],
     key: "fullName",
+    render: (text, record) => record.posterUserId.fullName,
     responsive: ["md", "xs"],
   },
   {
-    title: "Task Name",
-    dataIndex: ["taskId", "taskName"],
+    title: "Provider Email",
     key: "taskName",
+    render : (text, record) => record.posterUserId.email,
     responsive: ["sm"],
   },
   {
-    title: "Task Price",
-    dataIndex: ["taskId", "taskPrice"],
-    key: "taskPrice",
+    title: "Amount",
+    key: "price",
+    render: (text, record) => `$${record.price}`,
     responsive: ["sm"],
   },
   {
-    title: "Task Payment Method",
+    title: "Method",
     dataIndex: "method",
     key: "method",
     responsive: ["sm", "xs"],
   },
   {
-    title: "Task Transaction Id",
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
+    responsive: ["sm", "xs"],
+    render: (text) => (text === "paid" ? "Paid" : "Pending"),
+  },
+  {
+    title: "Transaction Date",
+    dataIndex: "transactionDate",
+    key: "transactionId",
+    responsive: ["sm", "xs"],
+    render : (text) => moment(text).format('DD-MM-YYYY'),
+  },
+  {
+    title: "Transaction Id",
     dataIndex: "transactionId",
     key: "transactionId",
     responsive: ["sm", "xs"],
   },
 ];
-
-const PaymentTransaction = () => {
-  const [searchText, setSearchText] = useState("");
-  const [taskConformPaymentData, setTaskConformPamentData] = useState([]);
-  const navigate = useNavigate();
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchStories = async () => {
-      try {
-        const response = await axios.get("/data/conformPaymentTask.json");
-        // console.log("all payment tasks ===> ", response);
-        const data = Array.isArray(response.data) ? response.data : [];
-        // console.log("Fetched Data task:", data); // Log the data format
-        setTaskConformPamentData(data);
-      } catch (error) {
-        console.error("Error fetching stories data:", error);
-        setTaskConformPamentData([]); // Set to empty array if fetching fails
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStories();
-  }, []);
-
-  const filteredData = useMemo(() => {
-    if (!searchText) return taskConformPaymentData;
-    return taskConformPaymentData.filter((item) =>
-      item.method.toLowerCase().includes(searchText.toLowerCase())
-    );
-  }, [taskConformPaymentData, searchText]);
-
-  const onSearch = (value) => {
-    setSearchText(value);
-  };
-
-  const onChange = (filters, extra) => {
-    console.log("params", filters, extra);
-  };
 
   return (
     <div className="min-h-[90vh] p-4 lg:p-6">
@@ -96,7 +98,7 @@ const PaymentTransaction = () => {
               onClick={() => navigate(-1)}
             />
             <h1 className="text-2xl md:text-3xl font-bold text-[#1F2852]">
-              All Confirm Payment Tasks
+              Task Payment Transaction
             </h1>
           </div>
 
@@ -150,7 +152,7 @@ const PaymentTransaction = () => {
             <Table
               columns={columns}
               dataSource={filteredData}
-              loading={loading}
+              loading={isLoading}
               pagination={{ pageSize: 10 }}
               onChange={onChange}
               className="user-table"
