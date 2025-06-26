@@ -350,11 +350,11 @@ const AllTasks = () => {
         defaultActiveKey="ongoing"
         onChange={(key) => {
           setActiveTab(key);
-          setSearchText(""); // Optionally reset search when switching tabs
+          setSearchText("");
         }}
         tabBarStyle={{
           width: "fit-content",
-          backgroundColor: "#FFFFFF", // Tab background color
+          backgroundColor: "#FFFFFF",
           padding: "10px",
           borderRadius: "5px",
         }}

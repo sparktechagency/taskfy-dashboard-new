@@ -1,0 +1,33 @@
+
+
+services:
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./Docker/Dockerfile
+    container_name: task-manager-dashboard
+    env_file:
+      - .env
+    volumes:
+      - shared-data:/shared
+    ports:
+      - "5050:4173"
+    networks:
+      - server-net
+    # depends_on:
+    #   - mongo
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M 
+        reservations:
+          cpus: '0.50'
+          memory: 256M 
+
+networks:
+  server-net:
+
+volumes:
+  shared-data:
