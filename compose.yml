@@ -1,14 +1,12 @@
 
-
 services:
-
-  frontend:
+  task-manager-dashboard:
     build:
       context: .
       dockerfile: ./Docker/Dockerfile
     container_name: task-manager-dashboard
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     volumes:
       - shared-data:/shared
     ports:
