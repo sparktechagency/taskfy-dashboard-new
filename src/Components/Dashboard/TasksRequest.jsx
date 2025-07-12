@@ -405,7 +405,7 @@ const TasksRequest = () => {
                   className="bg-gray-100 p-4 rounded-lg shadow-md"
                 >
                   <Link
-                    to={`/task-request-details/${request._id}`}
+                    to={`/task-requiest-details/${request._id}`}
                     state={request}
                     className="text-xl font-bold text-[#013564]"
                   >
